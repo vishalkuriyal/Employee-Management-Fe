@@ -18,13 +18,21 @@ type DepartmentType = {
   _id: string;
   dep_name: string;
   description: string;
-  // You may add other department fields if needed
+};
+
+type ShiftType = {
+  _id: string;
+  name: string;
+  startTime: string;
+  endTime: string;
+  isCrossMidnight: boolean;
 };
 
 type EmployeeDataType = {
   _id: string;
   employeeId: string;
   dob: string;
+  doj: string;
   gender: string;
   phoneNumber: string;
   salary: number;
@@ -32,13 +40,13 @@ type EmployeeDataType = {
   bankBranch: string;
   bankIfsc: string;
   department: DepartmentType;
+  shiftId?: ShiftType; // ⭐ NEW: Shift data
   userId: UserType;
   createdAt: string;
   updatedAt: string;
   __v: number;
 };
 
-// Form data type for edited employee
 type FormDataType = {
   name: string;
   email: string;
@@ -47,6 +55,7 @@ type FormDataType = {
   doj: string;
   gender: string;
   department: string;
+  shiftId: string; // ⭐ NEW: Shift field
   phoneNumber: string;
   salary: number;
   role: string;
@@ -62,9 +71,9 @@ const EditEmployee = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [departments, setDepartments] = useState<DepartmentType[]>([]);
+  const [shifts, setShifts] = useState<ShiftType[]>([]); // ⭐ NEW: Shifts state
   const { id } = useParams();
 
-  // Create separate state for form data
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
@@ -73,6 +82,7 @@ const EditEmployee = () => {
     doj: "",
     gender: "",
     department: "",
+    shiftId: "", // ⭐ NEW: Shift field
     phoneNumber: "",
     salary: 0,
     role: "",
@@ -82,20 +92,34 @@ const EditEmployee = () => {
     image: null
   });
 
-  // Fetch departments
+  // ⭐ NEW: Fetch departments and shifts
   useEffect(() => {
-    const getDepartments = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch departments
         const depsData = await fetchDepartments();
         if (depsData) {
           setDepartments(depsData);
         }
+
+        // Fetch shifts
+        const shiftsResponse = await axios.get(
+          'http://localhost:8000/api/shifts',
+          {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        if (shiftsResponse.data.success) {
+          setShifts(shiftsResponse.data.shifts);
+        }
       } catch (error) {
-        console.error("Error fetching departments:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    getDepartments();
+    fetchData();
   }, []);
 
   // Fetch employee data
@@ -121,17 +145,18 @@ const EditEmployee = () => {
             name: employeeData.userId.name || "",
             email: employeeData.userId.email || "",
             employeeId: employeeData.employeeId || "",
-            dob: employeeData.dob ? employeeData.dob.split('T')[0] : "", // Format date for input
-            doj: employeeData.doj ? employeeData.doj.split('T')[0] : "", // Format date for input
+            dob: employeeData.dob ? employeeData.dob.split('T')[0] : "",
+            doj: employeeData.doj ? employeeData.doj.split('T')[0] : "",
             gender: employeeData.gender || "",
             department: employeeData.department._id || "",
+            shiftId: employeeData.shiftId?._id || "", // ⭐ NEW: Set shift
             phoneNumber: employeeData.phoneNumber || "",
             salary: employeeData.salary || 0,
             role: employeeData.userId.role || "",
             bankBranch: employeeData.bankBranch || "",
             bankIfsc: employeeData.bankIfsc || "",
             accountNumber: employeeData.accountNumber || "",
-            image: null // Can't prefill file input
+            image: null
           });
         }
       } catch (error) {
@@ -156,7 +181,6 @@ const EditEmployee = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
-    // Handle file input separately
     if (type === "file") {
       const fileInput = e.target as HTMLInputElement;
       const files = fileInput.files;
@@ -168,7 +192,6 @@ const EditEmployee = () => {
         }));
       }
     } else {
-      // Handle other input types
       setFormData((prevData) => ({
         ...prevData,
         [name]: type === "number" ? Number(value) : value
@@ -179,10 +202,14 @@ const EditEmployee = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Create a new FormData object
+    // ⭐ NEW: Validate shift is selected
+    if (!formData.shiftId) {
+      alert("Please select a shift for the employee");
+      return;
+    }
+
     const formDataObj = new FormData();
     
-    // Add text fields to FormData
     formDataObj.append("name", formData.name);
     formDataObj.append("email", formData.email);
     formDataObj.append("employeeId", formData.employeeId);
@@ -190,6 +217,7 @@ const EditEmployee = () => {
     formDataObj.append("doj", formData.doj);
     formDataObj.append("gender", formData.gender);
     formDataObj.append("department", formData.department);
+    formDataObj.append("shiftId", formData.shiftId); // ⭐ NEW: Add shift
     formDataObj.append("phoneNumber", formData.phoneNumber);
     formDataObj.append("salary", formData.salary.toString());
     formDataObj.append("role", formData.role);
@@ -197,7 +225,6 @@ const EditEmployee = () => {
     formDataObj.append("bankIfsc", formData.bankIfsc);
     formDataObj.append("accountNumber", formData.accountNumber);
     
-    // Add the file separately if it exists
     if (formData.image) {
       formDataObj.append("image", formData.image);
     }
@@ -208,7 +235,7 @@ const EditEmployee = () => {
         formDataObj,
         {
           headers: {
-            'Content-Type': 'multipart/form-data', // Important!
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         }
@@ -308,7 +335,7 @@ const EditEmployee = () => {
                 name="doj"
                 value={formData.doj}
                 onChange={handleChange}
-                placeholder="Date of Birth"
+                placeholder="Date of Joining"
                 className="px-4 py-2 border-b border-black/30 w-full outline-none"
                 required
               />
@@ -341,6 +368,27 @@ const EditEmployee = () => {
                 {departments.map((dep) => (
                   <option key={dep._id} value={dep._id}>
                     {dep.dep_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* ⭐ NEW: Shift Selection */}
+            <div className="flex flex-col">
+              <label className="source-sans-3-medium">
+                Shift <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="shiftId"
+                value={formData.shiftId}
+                onChange={handleChange}
+                className="px-4 py-2 border-b border-black/30 w-full outline-none"
+                required
+              >
+                <option value="">Select Shift</option>
+                {shifts.map((shift) => (
+                  <option key={shift._id} value={shift._id}>
+                    {shift.name} ({shift.startTime} - {shift.endTime})
+                    {shift.isCrossMidnight && " (Crosses Midnight)"}
                   </option>
                 ))}
               </select>

@@ -7,7 +7,7 @@ import { IoSettings } from "react-icons/io5";
 
 const AdminSidebar = () => {
   return (
-    <div className="w-[350px] bg-secondary h-screen py-5 pl-[18px]">
+    <div className="w-[350px] bg-secondary min-h-screen py-5 pl-[18px]">
       <h2 className="source-sans-3-bold text-white text-2xl pb-4 border-b mr-[18px] text-center ">
         {" "}
         Admin Dashboard

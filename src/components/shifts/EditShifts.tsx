@@ -1,6 +1,19 @@
 import axios from "axios";
-import { useState, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+type ShiftType = {
+  _id: string;
+  name: string;
+  displayName: string;
+  startTime: string;
+  endTime: string;
+  graceMinutes: number;
+  minimumHours: number;
+  isCrossMidnight: boolean;
+  description: string;
+  isActive: boolean;
+};
 
 type FormType = {
   name: string;
@@ -11,9 +24,10 @@ type FormType = {
   minimumHours: number;
   isCrossMidnight: boolean;
   description: string;
+  isActive: boolean;
 };
 
-const AddShift = () => {
+const EditShift = () => {
   const [shift, setShift] = useState<FormType>({
     name: "",
     displayName: "",
@@ -23,9 +37,56 @@ const AddShift = () => {
     minimumHours: 8,
     isCrossMidnight: false,
     description: "",
+    isActive: true,
   });
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  // Fetch shift data
+  useEffect(() => {
+    const fetchShift = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/shifts/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.data.success) {
+          const shiftData = response.data.shift;
+          setShift({
+            name: shiftData.name || "",
+            displayName: shiftData.displayName || "",
+            startTime: shiftData.startTime || "",
+            endTime: shiftData.endTime || "",
+            graceMinutes: shiftData.graceMinutes || 15,
+            minimumHours: shiftData.minimumHours || 8,
+            isCrossMidnight: shiftData.isCrossMidnight || false,
+            description: shiftData.description || "",
+            isActive: shiftData.isActive !== undefined ? shiftData.isActive : true,
+          });
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          setError(error.response.data.error || "Failed to fetch shift data");
+          alert(error.response.data.error);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShift();
+  }, [id]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -42,6 +103,7 @@ const AddShift = () => {
     }
   };
 
+  
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -62,8 +124,8 @@ const AddShift = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/shifts/add",
+      const response = await axios.put(
+        `http://localhost:8000/api/shifts/${id}`,
         shift,
         {
           headers: {
@@ -74,15 +136,16 @@ const AddShift = () => {
       );
 
       if (response.data.success) {
-        alert("Shift added successfully!");
+        alert("Shift updated successfully!");
         navigate("/admin-dashboard/shifts");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error details:", error.response?.data);
-        const errorMessage = error.response?.data?.error || 
-                           error.response?.data?.details || 
-                           "Failed to add shift";
+        const errorMessage =
+          error.response?.data?.error ||
+          error.response?.data?.details ||
+          "Failed to update shift";
         alert(errorMessage);
       } else {
         console.error("Unexpected error:", error);
@@ -91,11 +154,23 @@ const AddShift = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        Loading shift data...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-500 text-center p-4">Error: {error}</div>;
+  }
+
   return (
     <div className="px-14 bg-background">
       <div className="max-w-3xl mx-auto mt-10 bg-white px-14 py-16">
         <h3 className="source-sans-3-semibold text-2xl text-center mb-8">
-          Add Shift
+          Edit Shift
         </h3>
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
           {/* Shift Type - DROPDOWN */}
@@ -231,6 +306,27 @@ const AddShift = () => {
             </span>
           </div>
 
+          {/* Active Status */}
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              name="isActive"
+              id="isActive"
+              checked={shift.isActive}
+              onChange={handleChange}
+              className="w-4 h-4 cursor-pointer"
+            />
+            <label
+              htmlFor="isActive"
+              className="source-sans-3-medium cursor-pointer"
+            >
+              Active Shift
+            </label>
+            <span className="text-sm text-gray-500">
+              Inactive shifts won't be available for assignment
+            </span>
+          </div>
+
           {/* Description */}
           <div className="flex flex-col">
             <label htmlFor="description" className="source-sans-3-medium">
@@ -249,7 +345,7 @@ const AddShift = () => {
           <div className="flex gap-4 mt-6">
             <button
               type="button"
-              onClick={() => navigate('/admin-dashboard/shifts')}
+              onClick={() => navigate("/admin-dashboard/shifts")}
               className="px-4 py-2 border w-full bg-gray-300 text-gray-800 cursor-pointer hover:bg-gray-400 transition-colors"
             >
               Cancel
@@ -258,7 +354,7 @@ const AddShift = () => {
               type="submit"
               className="px-4 py-2 border w-full bg-secondary text-white cursor-pointer hover:bg-secondary/90 transition-colors"
             >
-              Add Shift
+              Update Shift
             </button>
           </div>
         </form>
@@ -267,4 +363,4 @@ const AddShift = () => {
   );
 };
 
-export default AddShift;
+export default EditShift;

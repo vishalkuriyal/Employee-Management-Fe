@@ -21,6 +21,8 @@ import EmployeeLeaves from "./components/leaves/EmployeeLeaves";
 import MarkAttendance from "./components/employeeDashboard/attendance/MarkAttendance";
 import EmployeeAttendance from "./components/attendance/EmployeeAttendance";
 import AddShift from "./components/shifts/AddShifts";
+import ViewShifts from "./components/shifts/ViewShifts";
+import EditShift from "./components/shifts/EditShifts";
 
 function App() {
   return (
@@ -73,7 +75,15 @@ function App() {
           ></Route>
           <Route
             path="/admin-dashboard/shifts"
+            element={<ViewShifts />}
+          ></Route>
+          <Route
+            path="/admin-dashboard/shifts/add"
             element={<AddShift />}
+          ></Route>
+          <Route
+            path="/admin-dashboard/shifts/edit/:id"
+            element={<EditShift />}
           ></Route>
           <Route
             path="/admin-dashboard/leaves"
