@@ -89,7 +89,7 @@ const EditEmployee = () => {
     bankBranch: "",
     bankIfsc: "",
     accountNumber: "",
-    image: null
+    image: null,
   });
 
   // ⭐ NEW: Fetch departments and shifts
@@ -104,11 +104,11 @@ const EditEmployee = () => {
 
         // Fetch shifts
         const shiftsResponse = await axios.get(
-          'http://localhost:8000/api/shifts',
+          "http://localhost:8001/api/shifts",
           {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
         if (shiftsResponse.data.success) {
@@ -128,25 +128,25 @@ const EditEmployee = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/employees/${id}`,
+          `http://localhost:8001/api/employees/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        
+
         if (response.data.success) {
           const employeeData = response.data.employee;
           setEmployee(employeeData);
-          
+
           // Populate form data with employee data
           setFormData({
             name: employeeData.userId.name || "",
             email: employeeData.userId.email || "",
             employeeId: employeeData.employeeId || "",
-            dob: employeeData.dob ? employeeData.dob.split('T')[0] : "",
-            doj: employeeData.doj ? employeeData.doj.split('T')[0] : "",
+            dob: employeeData.dob ? employeeData.dob.split("T")[0] : "",
+            doj: employeeData.doj ? employeeData.doj.split("T")[0] : "",
             gender: employeeData.gender || "",
             department: employeeData.department._id || "",
             shiftId: employeeData.shiftId?._id || "", // ⭐ NEW: Set shift
@@ -156,7 +156,7 @@ const EditEmployee = () => {
             bankBranch: employeeData.bankBranch || "",
             bankIfsc: employeeData.bankIfsc || "",
             accountNumber: employeeData.accountNumber || "",
-            image: null
+            image: null,
           });
         }
       } catch (error) {
@@ -174,27 +174,29 @@ const EditEmployee = () => {
         setLoading(false);
       }
     };
-    
+
     fetchEmployee();
   }, [id]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value, type } = e.target;
-    
+
     if (type === "file") {
       const fileInput = e.target as HTMLInputElement;
       const files = fileInput.files;
-      
+
       if (files && files.length > 0) {
         setFormData((prevData) => ({
           ...prevData,
-          [name]: files[0]
+          [name]: files[0],
         }));
       }
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: type === "number" ? Number(value) : value
+        [name]: type === "number" ? Number(value) : value,
       }));
     }
   };
@@ -209,7 +211,7 @@ const EditEmployee = () => {
     }
 
     const formDataObj = new FormData();
-    
+
     formDataObj.append("name", formData.name);
     formDataObj.append("email", formData.email);
     formDataObj.append("employeeId", formData.employeeId);
@@ -224,32 +226,34 @@ const EditEmployee = () => {
     formDataObj.append("bankBranch", formData.bankBranch);
     formDataObj.append("bankIfsc", formData.bankIfsc);
     formDataObj.append("accountNumber", formData.accountNumber);
-    
+
     if (formData.image) {
       formDataObj.append("image", formData.image);
     }
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/employees/${id}`, 
+        `http://localhost:8001/api/employees/${id}`,
         formDataObj,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-      
+
       if (response.data.success) {
         alert("Employee updated successfully!");
-        navigate('/admin-dashboard/employees');
+        navigate("/admin-dashboard/employees");
       }
     } catch (error) {
-      if (axios.isAxiosError(error) &&
-          error.response &&
-          error.response.data &&
-          !error.response.data.success) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.data &&
+        !error.response.data.success
+      ) {
         alert(error.response.data.error);
       } else {
         console.error("Update error:", error);
@@ -259,7 +263,11 @@ const EditEmployee = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading employee data...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        Loading employee data...
+      </div>
+    );
   }
 
   if (error) {
@@ -436,9 +444,9 @@ const EditEmployee = () => {
               <label className="source-sans-3-medium">Upload Image</label>
               <div className="flex items-center gap-4">
                 {employee?.userId.image && (
-                  <img 
-                    src={`http://localhost:8000/${employee.userId.image}`} 
-                    alt="Current profile" 
+                  <img
+                    src={`http://localhost:8001/${employee.userId.image}`}
+                    alt="Current profile"
                     className="w-12 h-12 rounded-full object-cover"
                   />
                 )}
@@ -451,7 +459,9 @@ const EditEmployee = () => {
                   className="px-4 py-2 border-b border-black/30 w-full outline-none"
                 />
               </div>
-              <p className="text-xs text-gray-500 mt-1">Leave empty to keep current image</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Leave empty to keep current image
+              </p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="bankBranch" className="source-sans-3-medium">
@@ -496,7 +506,7 @@ const EditEmployee = () => {
           <div className="flex gap-4 mt-6">
             <button
               type="button"
-              onClick={() => navigate('/admin-dashboard/employees')}
+              onClick={() => navigate("/admin-dashboard/employees")}
               className="px-4 py-2 border w-full mt-4 bg-gray-300 text-gray-800 cursor-pointer"
             >
               Cancel

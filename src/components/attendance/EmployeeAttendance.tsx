@@ -76,7 +76,7 @@ interface TodayAttendanceResponse {
   details: AttendanceDetails;
 }
 
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL = "http://localhost:8001/api";
 
 const EmployeeAttendance: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(
