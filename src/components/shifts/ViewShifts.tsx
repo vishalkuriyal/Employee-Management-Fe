@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../../config/api";
 
 type ShiftType = {
   _id: string;
@@ -26,14 +27,11 @@ const ViewShifts = () => {
   const fetchShifts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/shifts",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/api/shifts`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         setShifts(response.data.shifts);
@@ -56,14 +54,11 @@ const ViewShifts = () => {
     }
 
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/shifts/${shiftId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${API_URL}/api/shifts/${shiftId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         alert("Shift deleted successfully!");
@@ -86,6 +81,8 @@ const ViewShifts = () => {
   const handleAddShift = () => {
     navigate("/admin-dashboard/shifts/add");
   };
+
+  console.log("Shifts Data:", shifts);
 
   // Format time to 12-hour format
   const formatTime = (time: string) => {
@@ -124,10 +121,10 @@ const ViewShifts = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-800">Shift Management</h2>
-            <p className="text-gray-600 mt-1">
-              Total Shifts: {shifts.length}
-            </p>
+            <h2 className="text-3xl font-bold text-gray-800">
+              Shift Management
+            </h2>
+            <p className="text-gray-600 mt-1">Total Shifts: {shifts.length}</p>
           </div>
           <button
             onClick={handleAddShift}

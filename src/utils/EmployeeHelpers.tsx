@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
+import { API_URL } from "../config/api";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { FaRegCalendarAlt } from "react-icons/fa";
@@ -70,7 +71,7 @@ export const customStyles = {
 export const fetchDepartments = async () => {
   let departments;
   try {
-    const response = await axios.get("http://localhost:8000/api/department", {
+    const response = await axios.get(`${API_URL}/api/department`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -97,11 +98,14 @@ export const fetchDepartments = async () => {
 export const getEmployees = async (id: string) => {
   let employees;
   try {
-    const response = await axios.get(`http://localhost:8000/api/employees/department/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/api/employees/department/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
     if (response.data.success) {
       employees = response.data.employees;
@@ -136,7 +140,7 @@ EmployeeButtonProps) => {
     if (confirm) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/api/employees/department/${id}`,
+          `${API_URL}/api/employees/department/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -167,7 +171,10 @@ EmployeeButtonProps) => {
         className="text-[#05AC72] cursor-pointer"
         onClick={() => navigate(`/admin-dashboard/employees/edit/${_id}`)}
       ></MdEdit>
-      <MdDelete className="text-[#05AC72] cursor-pointer" onClick={() =>  handleDelete(_id)}></MdDelete>
+      <MdDelete
+        className="text-[#05AC72] cursor-pointer"
+        onClick={() => handleDelete(_id)}
+      ></MdDelete>
       <FaRegCalendarAlt className="text-[#05AC72] cursor-pointer"></FaRegCalendarAlt>
       {/* <button
         className="px-4 py-2 bg-red-600 text-white source-sans-3-medium cursor-pointer"

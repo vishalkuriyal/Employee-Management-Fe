@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import { columns, DepartmentButtons } from "../../utils/DepartmentHelpers";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../../config/api";
 
 type DepartmentType = {
   _id: string;
@@ -22,7 +23,7 @@ const DepartmentList = () => {
   const fetchDepartments = async () => {
     setDepLoading(true);
     try {
-      const response = await axios.get("http://localhost:8000/api/department", {
+      const response = await axios.get(`${API_URL}/api/department`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -43,7 +44,7 @@ const DepartmentList = () => {
           ),
         }));
         setDepartments(data);
-        setFilteredDepartments(data)
+        setFilteredDepartments(data);
       }
     } catch (error) {
       if (

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 type FormType = {
   name: string;
@@ -62,16 +63,12 @@ const AddShift = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/shifts/add",
-        shift,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/shifts/add`, shift, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         alert("Shift added successfully!");
@@ -80,9 +77,10 @@ const AddShift = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error details:", error.response?.data);
-        const errorMessage = error.response?.data?.error || 
-                           error.response?.data?.details || 
-                           "Failed to add shift";
+        const errorMessage =
+          error.response?.data?.error ||
+          error.response?.data?.details ||
+          "Failed to add shift";
         alert(errorMessage);
       } else {
         console.error("Unexpected error:", error);
@@ -249,7 +247,7 @@ const AddShift = () => {
           <div className="flex gap-4 mt-6">
             <button
               type="button"
-              onClick={() => navigate('/admin-dashboard/shifts')}
+              onClick={() => navigate("/admin-dashboard/shifts")}
               className="px-4 py-2 border w-full bg-gray-300 text-gray-800 cursor-pointer hover:bg-gray-400 transition-colors"
             >
               Cancel

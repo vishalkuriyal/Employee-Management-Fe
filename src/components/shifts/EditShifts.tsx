@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 type ShiftType = {
   _id: string;
@@ -50,14 +51,11 @@ const EditShift = () => {
     const fetchShift = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/shifts/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/api/shifts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         if (response.data.success) {
           const shiftData = response.data.shift;
@@ -70,7 +68,8 @@ const EditShift = () => {
             minimumHours: shiftData.minimumHours || 8,
             isCrossMidnight: shiftData.isCrossMidnight || false,
             description: shiftData.description || "",
-            isActive: shiftData.isActive !== undefined ? shiftData.isActive : true,
+            isActive:
+              shiftData.isActive !== undefined ? shiftData.isActive : true,
           });
         }
       } catch (error) {
@@ -103,7 +102,6 @@ const EditShift = () => {
     }
   };
 
-  
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -124,16 +122,12 @@ const EditShift = () => {
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:8000/api/shifts/${id}`,
-        shift,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.put(`${API_URL}/api/shifts/${id}`, shift, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         alert("Shift updated successfully!");

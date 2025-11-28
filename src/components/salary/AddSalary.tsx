@@ -2,6 +2,7 @@ import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { fetchDepartments, getEmployees } from "../../utils/EmployeeHelpers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 type UserType = {
   _id: string;
@@ -82,12 +83,12 @@ const AddSalary = () => {
   // Fixed department handler
   const handleDepartment = async (e: ChangeEvent<HTMLSelectElement>) => {
     const departmentId = e.target.value;
-    
+
     // Update form data
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       department: departmentId,
-      employeeId: "" // Reset employee selection when department changes
+      employeeId: "", // Reset employee selection when department changes
     }));
 
     if (departmentId) {
@@ -121,7 +122,12 @@ const AddSalary = () => {
     e.preventDefault();
 
     // Validation
-    if (!formData.employeeId || !formData.payDate || !formData.department || !formData.basicSalary) {
+    if (
+      !formData.employeeId ||
+      !formData.payDate ||
+      !formData.department ||
+      !formData.basicSalary
+    ) {
       alert("Please fill in all required fields");
       return;
     }
@@ -130,7 +136,7 @@ const AddSalary = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/salary/add`,
+        `${API_URL}/api/salary/add`,
         {
           employeeId: formData.employeeId,
           payDate: formData.payDate,
@@ -216,12 +222,11 @@ const AddSalary = () => {
                 disabled={!formData.department || loading}
               >
                 <option value="">
-                  {!formData.department 
-                    ? "Select Department First" 
-                    : loading 
-                    ? "Loading employees..." 
-                    : "Select Employee"
-                  }
+                  {!formData.department
+                    ? "Select Department First"
+                    : loading
+                    ? "Loading employees..."
+                    : "Select Employee"}
                 </option>
                 {employees?.map((emp) => (
                   <option key={emp._id} value={emp._id}>
