@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Clock,
-  TrendingUp,
-  LogIn,
-  LogOut,
-  History,
-} from "lucide-react";
+import { Clock, TrendingUp, LogIn, LogOut, History } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
 
@@ -36,16 +30,25 @@ interface AttendanceStatistics {
   totalWorkingHours: number;
 }
 
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL = "http://localhost:8001/api";
 
 const MarkAttendance: React.FC = () => {
-  const [todayAttendance, setTodayAttendance] = useState<TodayAttendance | null>(null);
+  const [todayAttendance, setTodayAttendance] =
+    useState<TodayAttendance | null>(null);
   const [loading, setLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
-  const [attendanceHistory, setAttendanceHistory] = useState<AttendanceRecord[]>([]);
-  const [statistics, setStatistics] = useState<AttendanceStatistics | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [attendanceHistory, setAttendanceHistory] = useState<
+    AttendanceRecord[]
+  >([]);
+  const [statistics, setStatistics] = useState<AttendanceStatistics | null>(
+    null
+  );
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    new Date().getMonth() + 1
+  );
+  const [selectedYear, setSelectedYear] = useState<number>(
+    new Date().getFullYear()
+  );
   const { user } = useAuth();
   const userId = user?._id || "";
 
@@ -64,8 +67,8 @@ const MarkAttendance: React.FC = () => {
   }, [userId, selectedMonth, selectedYear]);
 
   const getAuthHeaders = () => ({
-    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    'Content-Type': 'application/json'
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type": "application/json",
   });
 
   const fetchTodayAttendance = async () => {
@@ -89,7 +92,7 @@ const MarkAttendance: React.FC = () => {
         checkIn: null,
         checkOut: null,
         workingHours: 0,
-        status: "absent"
+        status: "absent",
       });
     }
   };
@@ -101,21 +104,23 @@ const MarkAttendance: React.FC = () => {
         {
           params: {
             month: selectedMonth,
-            year: selectedYear
+            year: selectedYear,
           },
-          headers: getAuthHeaders()
+          headers: getAuthHeaders(),
         }
       );
 
       if (response.data.success) {
         setAttendanceHistory(response.data.attendance || []);
-        setStatistics(response.data.statistics || {
-          present: 0,
-          absent: 0,
-          halfDay: 0,
-          leave: 0,
-          totalWorkingHours: 0
-        });
+        setStatistics(
+          response.data.statistics || {
+            present: 0,
+            absent: 0,
+            halfDay: 0,
+            leave: 0,
+            totalWorkingHours: 0,
+          }
+        );
       }
     } catch (error) {
       console.error("Error fetching attendance history:", error);
@@ -125,7 +130,7 @@ const MarkAttendance: React.FC = () => {
         absent: 0,
         halfDay: 0,
         leave: 0,
-        totalWorkingHours: 0
+        totalWorkingHours: 0,
       });
     }
   };
@@ -491,7 +496,9 @@ const MarkAttendance: React.FC = () => {
                         {formatTime(record.checkOut)}
                       </td>
                       <td className="py-4 px-4 text-gray-600">
-                        {record.workingHours > 0 ? `${record.workingHours.toFixed(2)}h` : "--"}
+                        {record.workingHours > 0
+                          ? `${record.workingHours.toFixed(2)}h`
+                          : "--"}
                       </td>
                       <td className="py-4 px-4">
                         <span
