@@ -3,18 +3,18 @@ import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../config/api";
 
-type ShiftType = {
-  _id: string;
-  name: string;
-  displayName: string;
-  startTime: string;
-  endTime: string;
-  graceMinutes: number;
-  minimumHours: number;
-  isCrossMidnight: boolean;
-  description: string;
-  isActive: boolean;
-};
+// type ShiftType = {
+//   _id: string;
+//   name: string;
+//   displayName: string;
+//   startTime: string;
+//   endTime: string;
+//   graceMinutes: number;
+//   minimumHours: number;
+//   isCrossMidnight: boolean;
+//   description: string;
+//   isActive: boolean;
+// };
 
 type FormType = {
   name: string;
