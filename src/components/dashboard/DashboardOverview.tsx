@@ -63,18 +63,6 @@ const DashboardOverview: React.FC = () => {
   );
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  // Simplified utility function to get auth headers
-  const getAuthHeaders = (): HeadersInit => {
-    const token =
-      localStorage.getItem("token") || localStorage.getItem("authToken");
-    console.log("Token found:", token ? "Yes" : "No");
-
-    return {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-  };
 
   useEffect(() => {
     fetchDashboardData();

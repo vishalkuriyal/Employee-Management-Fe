@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Clock, TrendingUp, LogIn, LogOut, History } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
-import axios from "axios";
 import api from "../../../utils/axios";
 
 interface AttendanceRecord {
@@ -65,10 +64,7 @@ const MarkAttendance: React.FC = () => {
     }
   }, [userId, selectedMonth, selectedYear]);
 
-  const getAuthHeaders = () => ({
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-    "Content-Type": "application/json",
-  });
+
 
   const fetchTodayAttendance = async () => {
     try {

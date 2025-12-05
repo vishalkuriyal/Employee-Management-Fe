@@ -11,8 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import axios from "axios";
-import api, { API_BASE_URL } from "../../utils/axios";
+import api from "../../utils/axios";
 
 interface AttendanceStatus {
   status: "present" | "absent" | "half-day" | "leave";
@@ -121,10 +120,6 @@ const EmployeeAttendance: React.FC = () => {
     }
   }, [selectedDate, selectedDepartment, selectedStatus, currentPage]);
 
-  const getAuthHeaders = () => ({
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-    "Content-Type": "application/json",
-  });
 
   const fetchAttendanceData = async () => {
     setLoading(true);

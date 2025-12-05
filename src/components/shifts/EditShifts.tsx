@@ -3,18 +3,6 @@ import api from "../../utils/axios";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-type ShiftType = {
-  _id: string;
-  name: string;
-  displayName: string;
-  startTime: string;
-  endTime: string;
-  graceMinutes: number;
-  minimumHours: number;
-  isCrossMidnight: boolean;
-  description: string;
-  isActive: boolean;
-};
 
 type FormType = {
   name: string;
