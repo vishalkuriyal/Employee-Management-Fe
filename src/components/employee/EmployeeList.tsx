@@ -1,5 +1,5 @@
 import axios from "axios";
-import api, { API_BASE_URL } from "../../utils/axios";
+import api, { API_BASE_URL, UPLOADS_BASE_URL } from "../../utils/axios";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import React, { useEffect, useState } from "react";
@@ -85,7 +85,7 @@ const EmployeeList = () => {
               dob: emp.dob ? new Date(emp.dob).toDateString() : "N/A",
               image: emp.userId.image ? (
                 <img
-                  src={`${API_BASE_URL}/${emp.userId.image}`}
+                  src={`${UPLOADS_BASE_URL}/${emp.userId.image}`}
                   alt="profile image"
                   className="size-16 rounded-full object-cover object-top"
                   onError={(e) => {
