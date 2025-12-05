@@ -1,5 +1,5 @@
 import axios from "axios";
-import api, { API_BASE_URL, UPLOADS_BASE_URL } from "../../utils/axios";
+import api, { UPLOADS_BASE_URL } from "../../utils/axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import api, { API_BASE_URL, UPLOADS_BASE_URL } from "../../utils/axios";
+import api, {  UPLOADS_BASE_URL } from "../../utils/axios";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import React, { useEffect, useState } from "react";
