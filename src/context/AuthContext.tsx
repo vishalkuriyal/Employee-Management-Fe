@@ -6,7 +6,7 @@ import {
   useEffect,
 } from "react";
 import { UserType } from "../types/type";
-import axios from "axios";
+import api from "../utils/axios";
 
 interface AuthContextType {
   user: UserType | null;
@@ -27,15 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const token = localStorage.getItem("token");
         if (token) {
           console.log("Token found, verifying user...");
-          const response = await axios.get(
-            "http://localhost:8001/api/auth/verify",
-
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await api.get(`/api/auth/verify`);
 
           console.log("Verify response:", response.data);
 

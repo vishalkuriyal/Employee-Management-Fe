@@ -1,6 +1,7 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { fetchDepartments, getEmployees } from "../../utils/EmployeeHelpers";
 import axios from "axios";
+import api from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 type UserType = {
@@ -134,21 +135,12 @@ const AddSalary = () => {
     setSubmitting(true);
 
     try {
-      const response = await axios.post(
-        `http://localhost:8001/api/salary/add`,
-        {
-          employeeId: formData.employeeId,
-          payDate: formData.payDate,
-          department: formData.department,
-          basicSalary: formData.basicSalary,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post(`/api/salary/add`, {
+        employeeId: formData.employeeId,
+        payDate: formData.payDate,
+        department: formData.department,
+        basicSalary: formData.basicSalary,
+      });
 
       if (response.data.success) {
         alert("Salary added successfully!");

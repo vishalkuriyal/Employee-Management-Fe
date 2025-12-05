@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import api from "../../../utils/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
@@ -29,19 +30,11 @@ const Setting = () => {
     }
 
     try {
-      const response = await axios.put(
-        "http://localhost:8001/api/setting/change-password",
-        {
-          userId: setting.userId,
-          oldPassword: setting.oldPassword,
-          newPassword: setting.newPassword, // Fixed property name
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/api/setting/change-password`, {
+        userId: setting.userId,
+        oldPassword: setting.oldPassword,
+        newPassword: setting.newPassword,
+      });
 
       if (response.data.success) {
         navigate("/employee-dashboard");

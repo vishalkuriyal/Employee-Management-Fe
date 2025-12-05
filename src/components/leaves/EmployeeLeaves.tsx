@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import api from "../../utils/axios";
 import {
   Search,
   ChevronLeft,
@@ -67,12 +68,7 @@ const EmployeeLeaves = () => {
         ...(searchQuery && { search: searchQuery }),
       };
 
-      const response = await axios.get("http://localhost:8001/api/leave/all", {
-        params,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await api.get(`/api/leave/all`, { params });
 
       if (response.data.success) {
         setLeaves(response.data.data.leaves);
@@ -101,18 +97,10 @@ const EmployeeLeaves = () => {
   ) => {
     try {
       setActionLoading(true);
-      const response = await axios.put(
-        `http://localhost:8001/api/leave/status/${leaveId}`,
-        {
-          status: newStatus,
-          comments: comments,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/api/leave/status/${leaveId}`, {
+        status: newStatus,
+        comments: comments,
+      });
 
       if (response.data.success) {
         fetchLeaves();

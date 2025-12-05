@@ -12,6 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import axios from "axios";
+import api, { API_BASE_URL } from "../../utils/axios";
 
 interface AttendanceStatus {
   status: "present" | "absent" | "half-day" | "leave";
@@ -76,8 +77,6 @@ interface TodayAttendanceResponse {
   details: AttendanceDetails;
 }
 
-const API_BASE_URL = "http://localhost:8001/api";
-
 const EmployeeAttendance: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -130,7 +129,7 @@ const EmployeeAttendance: React.FC = () => {
   const fetchAttendanceData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/attendance/all`, {
+      const response = await api.get(`/api/attendance/all`, {
         params: {
           date: selectedDate,
           department: selectedDepartment,
@@ -138,7 +137,6 @@ const EmployeeAttendance: React.FC = () => {
           page: currentPage,
           limit: 10,
         },
-        headers: getAuthHeaders(),
       });
 
       if (response.data.success) {
@@ -161,17 +159,13 @@ const EmployeeAttendance: React.FC = () => {
       const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
       const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-      const response = await axios.get(
-        `${API_BASE_URL}/attendance/statistics`,
-        {
-          params: {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            department: selectedDepartment,
-          },
-          headers: getAuthHeaders(),
-        }
-      );
+      const response = await api.get(`/api/attendance/statistics`, {
+        params: {
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          department: selectedDepartment,
+        },
+      });
 
       if (response.data.success) {
         setStatistics(response.data.statistics || null);
@@ -186,13 +180,12 @@ const EmployeeAttendance: React.FC = () => {
 
   const fetchTodayAttendance = async () => {
     try {
-      const response = await axios.get<TodayAttendanceResponse>(
-        `${API_BASE_URL}/attendance/today-attendance`,
+      const response = await api.get<TodayAttendanceResponse>(
+        `/api/attendance/today-attendance`,
         {
           params: {
             department: selectedDepartment,
           },
-          headers: getAuthHeaders(),
         }
       );
 
@@ -213,17 +206,13 @@ const EmployeeAttendance: React.FC = () => {
     if (!selectedEmployee) return;
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/attendance/mark`,
-        {
-          employeeId: selectedEmployee.employeeId,
-          date: selectedDate,
-          status: manualStatus,
-          remarks: remarks,
-          adminUserId: localStorage.getItem("userId"),
-        },
-        { headers: getAuthHeaders() }
-      );
+      const response = await api.post(`/api/attendance/mark`, {
+        employeeId: selectedEmployee.employeeId,
+        date: selectedDate,
+        status: manualStatus,
+        remarks: remarks,
+        adminUserId: localStorage.getItem("userId"),
+      });
 
       if (response.data.success) {
         // Refresh data

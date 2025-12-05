@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { UserCheck, Phone, Mail, Building, RefreshCw } from "lucide-react";
 import employee from "../../assets/employees.svg";
+import api from "../../utils/axios";
 import working from "../../assets/working.svg";
 
 // Keep your existing type definitions...
@@ -85,62 +86,10 @@ const DashboardOverview: React.FC = () => {
 
     try {
       console.log(
-        "Fetching dashboard data from:",
-        "/api/dashboard/employee-detail"
+        "Fetching dashboard data from /api/dashboard/employee-detail"
       );
-
-      const response = await fetch(
-        "http://localhost:8001/api/dashboard/employee-detail",
-        {
-          method: "GET",
-          headers: getAuthHeaders(),
-        }
-      );
-
-      console.log("Response status:", response.status);
-      console.log(
-        "Response headers:",
-        Object.fromEntries(response.headers.entries())
-      );
-
-      // Check if response is OK
-      if (!response.ok) {
-        let errorMessage = `Server error: ${response.status}`;
-
-        try {
-          const contentType = response.headers.get("content-type");
-          if (contentType && contentType.includes("application/json")) {
-            const errorData = await response.json();
-            errorMessage = errorData.error || errorData.message || errorMessage;
-          } else {
-            const textResponse = await response.text();
-            if (textResponse.includes("<!DOCTYPE")) {
-              errorMessage =
-                "Server returned HTML error page. Check if API endpoint exists.";
-            }
-          }
-        } catch (parseError) {
-          console.error("Error parsing error response:", parseError);
-        }
-
-        // Handle specific status codes
-        if (response.status === 401) {
-          errorMessage = "Authentication failed. Please login again.";
-          // Clear tokens
-          localStorage.removeItem("token");
-          localStorage.removeItem("authToken");
-        } else if (response.status === 404) {
-          errorMessage =
-            "Dashboard API endpoint not found. Check server routes.";
-        }
-
-        throw new Error(errorMessage);
-      }
-
-      // Parse JSON response
-      const data: ApiResponse = await response.json();
-      console.log("API Response received:", data);
-
+      const res = await api.get(`/api/dashboard/employee-detail`);
+      const data: ApiResponse = res.data;
       if (data.success && data.data) {
         setDashboardData(data.data);
         console.log("Dashboard data loaded successfully");

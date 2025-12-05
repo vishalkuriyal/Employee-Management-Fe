@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import { columns, DepartmentButtons } from "../../utils/DepartmentHelpers";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../../utils/axios";
 
 type DepartmentType = {
   _id: string;
@@ -22,11 +23,7 @@ const DepartmentList = () => {
   const fetchDepartments = async () => {
     setDepLoading(true);
     try {
-      const response = await axios.get("http://localhost:8001/api/department", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await api.get(`/api/department`);
 
       if (response.data.success) {
         let sno = 1;

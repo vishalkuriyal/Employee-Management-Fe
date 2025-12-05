@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
+import api from "../../../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 const AddLeaves = () => {
@@ -48,16 +49,7 @@ const AddLeaves = () => {
     console.log("Form data being sent:", leave);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8001/api/leave/add",
-        leave,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post(`/api/leave/add`, leave);
 
       if (response.data.success) {
         navigate("/employee-dashboard/leaves");

@@ -1,4 +1,5 @@
 import axios from "axios";
+import api, { API_BASE_URL } from "../../utils/axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -53,14 +54,7 @@ const ViewEmployee = () => {
     const fetchEmployee = async () => {
       setLoading(true);
       try {
-        const response = await axios.get<ApiResponse>(
-          `http://localhost:8001/api/employees/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get<ApiResponse>(`/api/employees/${id}`);
 
         if (response.data.success) {
           setEmployee(response.data.employee);
@@ -104,7 +98,7 @@ const ViewEmployee = () => {
         <div className="flex items-center mb-6">
           {employee.userId.image && (
             <img
-              src={`http://localhost:8001/${employee.userId.image}`}
+              src={`${API_BASE_URL}/${employee.userId.image}`}
               alt={employee.userId.name}
               className="w-24 h-24 rounded-full object-cover object-top mr-6"
             />

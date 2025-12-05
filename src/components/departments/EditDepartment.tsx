@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../../utils/axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -17,14 +18,7 @@ const EditDepartment = () => {
     const fetchDepatments = async () => {
       setDepLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:8001/api/department/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get(`/api/department/${id}`);
         if (response.data.success) {
           setDepartment(response.data.department);
         }
@@ -58,15 +52,7 @@ const EditDepartment = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:8001/api/department/${id}`,
-        department,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/api/department/${id}`, department);
       if (response.data.success) {
         navigate("/admin-dashboard/departments");
       }

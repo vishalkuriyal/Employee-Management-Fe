@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "./axios";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -70,11 +71,7 @@ export const customStyles = {
 export const fetchDepartments = async () => {
   let departments;
   try {
-    const response = await axios.get("http://localhost:8001/api/department", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await api.get(`/api/department`);
 
     if (response.data.success) {
       departments = response.data.departments;
@@ -97,14 +94,7 @@ export const fetchDepartments = async () => {
 export const getEmployees = async (id: string) => {
   let employees;
   try {
-    const response = await axios.get(
-      `http://localhost:8001/api/employees/department/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+    const response = await api.get(`/api/employees/department/${id}`);
 
     if (response.data.success) {
       employees = response.data.employees;
@@ -138,14 +128,7 @@ EmployeeButtonProps) => {
     const confirm = window.confirm("do you want to delete?");
     if (confirm) {
       try {
-        const response = await axios.delete(
-          `http://localhost:8001/api/employees/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.delete(`/api/employees/${id}`);
         if (response.data.success) {
           onEmployeeDelete(id);
         }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../utils/axios";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +16,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:8001/api/auth/login",
-        { email, password }
-      );
+      const response = await api.post(`/api/auth/login`, { email, password });
 
       if (response.data.success) {
         // Fix 1: Pass both user AND token to login function (as your AuthContext expects)

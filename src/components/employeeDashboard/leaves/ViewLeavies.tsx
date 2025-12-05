@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
+import api from "../../../utils/axios";
 
 interface LeaveBalance {
   casual: {
@@ -32,14 +33,7 @@ const ViewLeaves = () => {
 
   const fetchLeaveBalance = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8001/api/leave/balance/${user?._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.get(`/api/leave/balance/${user?._id}`);
 
       if (response.data.success) {
         setLeaveBalance(response.data.leaveBalance);

@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../../utils/axios";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -50,14 +51,7 @@ const EditShift = () => {
     const fetchShift = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:8001/api/shifts/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get(`/api/shifts/${id}`);
 
         if (response.data.success) {
           const shiftData = response.data.shift;
@@ -124,16 +118,7 @@ const EditShift = () => {
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:8001/api/shifts/${id}`,
-        shift,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/api/shifts/${id}`, shift);
 
       if (response.data.success) {
         alert("Shift updated successfully!");

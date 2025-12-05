@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../../utils/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -30,15 +31,7 @@ const AddDepartment = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8001/api/department/add",
-        department,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post(`/api/department/add`, department);
       if (response.data.success) {
         navigate("/admin-dashboard/departments");
       }

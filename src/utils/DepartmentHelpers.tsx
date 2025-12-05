@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "./axios";
 import { useNavigate } from "react-router-dom";
 
 export const columns = [
@@ -32,14 +33,7 @@ export const DepartmentButtons = ({
     const confirm = window.confirm("do you want to delete?");
     if (confirm) {
       try {
-        const response = await axios.delete(
-          `http://localhost:8001/api/department/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.delete(`/api/department/${id}`);
         if (response.data.success) {
           onDepartmentDelete(id);
         }

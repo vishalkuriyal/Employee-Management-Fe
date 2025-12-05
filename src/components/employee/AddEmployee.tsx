@@ -1,6 +1,7 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { fetchDepartments } from "../../utils/EmployeeHelpers";
 import axios from "axios";
+import api from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 type DepartmentType = {
@@ -76,14 +77,7 @@ const AddEmployee = () => {
         setDepartments(departmentsData);
 
         // ⭐ NEW: Fetch shifts
-        const shiftsResponse = await axios.get(
-          "http://localhost:8001/api/shifts",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const shiftsResponse = await api.get(`/api/shifts`);
 
         if (shiftsResponse.data.success) {
           setShifts(shiftsResponse.data.shifts);
@@ -159,16 +153,7 @@ const AddEmployee = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8001/api/employees/add",
-        formDataObj,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post(`/api/employees/add`, formDataObj);
 
       if (response.data.success) {
         navigate("/admin-dashboard/employees");

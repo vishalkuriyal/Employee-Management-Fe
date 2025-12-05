@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../../utils/axios";
 
 type ShiftType = {
   _id: string;
@@ -26,11 +27,7 @@ const ViewShifts = () => {
   const fetchShifts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:8001/api/shifts", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await api.get(`/api/shifts`);
 
       if (response.data.success) {
         setShifts(response.data.shifts);
@@ -53,14 +50,7 @@ const ViewShifts = () => {
     }
 
     try {
-      const response = await axios.delete(
-        `http://localhost:8001/api/shifts/${shiftId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.delete(`/api/shifts/${shiftId}`);
 
       if (response.data.success) {
         alert("Shift deleted successfully!");

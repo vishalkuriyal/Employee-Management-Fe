@@ -1,6 +1,7 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { fetchDepartments } from "../../utils/EmployeeHelpers";
 import axios from "axios";
+import api, { API_BASE_URL } from "../../utils/axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 type UserType = {
@@ -103,14 +104,7 @@ const EditEmployee = () => {
         }
 
         // Fetch shifts
-        const shiftsResponse = await axios.get(
-          "http://localhost:8001/api/shifts",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const shiftsResponse = await api.get(`/api/shifts`);
         if (shiftsResponse.data.success) {
           setShifts(shiftsResponse.data.shifts);
         }
@@ -127,14 +121,7 @@ const EditEmployee = () => {
     const fetchEmployee = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:8001/api/employees/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get(`/api/employees/${id}`);
 
         if (response.data.success) {
           const employeeData = response.data.employee;
@@ -232,16 +219,7 @@ const EditEmployee = () => {
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:8001/api/employees/${id}`,
-        formDataObj,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/api/employees/${id}`, formDataObj);
 
       if (response.data.success) {
         alert("Employee updated successfully!");
@@ -445,7 +423,7 @@ const EditEmployee = () => {
               <div className="flex items-center gap-4">
                 {employee?.userId.image && (
                   <img
-                    src={`http://localhost:8001/${employee.userId.image}`}
+                    src={`${API_BASE_URL}/${employee.userId.image}`}
                     alt="Current profile"
                     className="w-12 h-12 rounded-full object-cover"
                   />

@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../../utils/axios";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -62,16 +63,7 @@ const AddShift = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8001/api/shifts/add",
-        shift,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post(`/api/shifts/add`, shift);
 
       if (response.data.success) {
         alert("Shift added successfully!");

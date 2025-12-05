@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Clock, TrendingUp, LogIn, LogOut, History } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
+import api from "../../../utils/axios";
 
 interface AttendanceRecord {
   status: "present" | "absent" | "half-day" | "leave";
@@ -29,8 +30,6 @@ interface AttendanceStatistics {
   leave: number;
   totalWorkingHours: number;
 }
-
-const API_BASE_URL = "http://localhost:8001/api";
 
 const MarkAttendance: React.FC = () => {
   const [todayAttendance, setTodayAttendance] =
@@ -73,10 +72,7 @@ const MarkAttendance: React.FC = () => {
 
   const fetchTodayAttendance = async () => {
     try {
-      const response = await axios.get(
-        `${API_BASE_URL}/attendance/today/${userId}`,
-        { headers: getAuthHeaders() }
-      );
+      const response = await api.get(`/api/attendance/today/${userId}`);
 
       if (response.data.success) {
         setTodayAttendance(response.data.data);
@@ -99,16 +95,12 @@ const MarkAttendance: React.FC = () => {
 
   const fetchAttendanceHistory = async () => {
     try {
-      const response = await axios.get(
-        `${API_BASE_URL}/attendance/employee/${userId}`,
-        {
-          params: {
-            month: selectedMonth,
-            year: selectedYear,
-          },
-          headers: getAuthHeaders(),
-        }
-      );
+      const response = await api.get(`/api/attendance/employee/${userId}`, {
+        params: {
+          month: selectedMonth,
+          year: selectedYear,
+        },
+      });
 
       if (response.data.success) {
         setAttendanceHistory(response.data.attendance || []);
@@ -138,11 +130,7 @@ const MarkAttendance: React.FC = () => {
   const handleCheckIn = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/attendance/check-in`,
-        { userId },
-        { headers: getAuthHeaders() }
-      );
+      const response = await api.post(`/api/attendance/check-in`, { userId });
 
       if (response.data.success) {
         // Refresh today's attendance
@@ -162,11 +150,7 @@ const MarkAttendance: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/attendance/check-out`,
-        { userId },
-        { headers: getAuthHeaders() }
-      );
+      const response = await api.post(`/api/attendance/check-out`, { userId });
 
       if (response.data.success) {
         // Refresh today's attendance and history
