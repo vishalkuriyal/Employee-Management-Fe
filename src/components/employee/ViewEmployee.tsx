@@ -1,5 +1,5 @@
 import axios from "axios";
-import api, { UPLOADS_BASE_URL } from "../../utils/axios";
+import api, { getImageUrl} from "../../utils/axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -98,7 +98,7 @@ const ViewEmployee = () => {
         <div className="flex items-center mb-6">
           {employee.userId.image && (
             <img
-              src={`${UPLOADS_BASE_URL}/${employee.userId.image}`}
+              src={getImageUrl(employee.userId.image)}
               alt={employee.userId.name}
               className="w-24 h-24 rounded-full object-cover object-top mr-6"
             />
