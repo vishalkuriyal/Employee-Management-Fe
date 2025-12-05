@@ -97,11 +97,14 @@ export const fetchDepartments = async () => {
 export const getEmployees = async (id: string) => {
   let employees;
   try {
-    const response = await axios.get(`http://localhost:8000/api/employees/department/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await axios.get(
+      `http://localhost:8000/api/employees/department/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
     if (response.data.success) {
       employees = response.data.employees;
@@ -136,7 +139,7 @@ EmployeeButtonProps) => {
     if (confirm) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/api/employees/department/${id}`,
+          `http://localhost:8000/api/employees/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -167,7 +170,10 @@ EmployeeButtonProps) => {
         className="text-[#05AC72] cursor-pointer"
         onClick={() => navigate(`/admin-dashboard/employees/edit/${_id}`)}
       ></MdEdit>
-      <MdDelete className="text-[#05AC72] cursor-pointer" onClick={() =>  handleDelete(_id)}></MdDelete>
+      <MdDelete
+        className="text-[#05AC72] cursor-pointer"
+        onClick={() => handleDelete(_id)}
+      ></MdDelete>
       <FaRegCalendarAlt className="text-[#05AC72] cursor-pointer"></FaRegCalendarAlt>
       {/* <button
         className="px-4 py-2 bg-red-600 text-white source-sans-3-medium cursor-pointer"

@@ -26,24 +26,24 @@ const EmployeeList = () => {
   const [error, setError] = useState<string>("");
 
   const handleEmployeeDelete = (id: string) => {
-    setEmployees(prev => prev.filter(emp => emp._id !== id));
+    setEmployees((prev) => prev.filter((emp) => emp._id !== id));
   };
 
   const fetchEmployees = async () => {
     setEmpLoading(true);
     setError("");
-    
+
     try {
       const token = localStorage.getItem("token");
       console.log("Token exists:", !!token);
-      
+
       if (!token) {
         setError("No authentication token found");
         return;
       }
 
       console.log("Fetching employees from API...");
-      
+
       const response = await axios.get("http://localhost:8000/api/employees", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ const EmployeeList = () => {
       if (response.data.success) {
         const employeesData = response.data.employees;
         console.log("Employees data:", employeesData);
-        
+
         if (!employeesData || employeesData.length === 0) {
           console.log("No employees found in database");
           setEmployees([]);
@@ -63,67 +63,76 @@ const EmployeeList = () => {
         }
 
         let sno = 1;
-        const data = employeesData.map((emp: any) => {
-          console.log("Processing employee:", emp);
-          
-          // Check if required nested data exists
-          if (!emp.userId) {
-            console.error("Employee missing userId:", emp);
-            return null;
-          }
-          
-          if (!emp.department) {
-            console.error("Employee missing department:", emp);
-            return null;
-          }
+        const data = employeesData
+          .map((emp: any) => {
+            console.log("Processing employee:", emp);
 
-          return {
-            _id: emp._id,
-            sno: sno++,
-            dep_name: emp.department.dep_name || "N/A",
-            name: emp.userId.name || "N/A",
-            email: emp.userId.email || "N/A",
-            account: emp.accountNumber || "N/A",
-            dob: emp.dob ? new Date(emp.dob).toDateString() : "N/A",
-            image: emp.userId.image ? (
-              <img
-                src={`http://localhost:8000/${emp.userId.image}`}
-                alt="profile image"
-                className="size-16 rounded-full object-cover object-top"
-                onError={(e) => {
-                  console.error("Image failed to load:", emp.userId.image);
-                  e.currentTarget.src = "/placeholder-avatar.png"; // fallback image
-                }}
-              />
-            ) : (
-              <div className="size-16 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-600 text-xs">No Image</span>
-              </div>
-            ),
-            action: (
-              <EmployeeButtons 
-                _id={emp._id} 
-                onEmployeeDelete={handleEmployeeDelete}
-              />
-            ),
-          };
-        }).filter(Boolean); // Remove null entries
-        
+            // Check if required nested data exists
+            if (!emp.userId) {
+              console.error("Employee missing userId:", emp);
+              return null;
+            }
+
+            if (!emp.department) {
+              console.error("Employee missing department:", emp);
+              return null;
+            }
+
+            return {
+              _id: emp._id,
+              sno: sno++,
+              dep_name: emp.department.dep_name || "N/A",
+              name: emp.userId.name || "N/A",
+              email: emp.userId.email || "N/A",
+              account: emp.accountNumber || "N/A",
+              dob: emp.dob ? new Date(emp.dob).toDateString() : "N/A",
+              image: emp.userId.image ? (
+                <img
+                  src={`http://localhost:8000/${emp.userId.image}`}
+                  alt="profile image"
+                  className="size-16 rounded-full object-cover object-top"
+                  onError={(e) => {
+                    console.error("Image failed to load:", emp.userId.image);
+                    // prevent infinite loop if fallback is missing or also fails
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/placeholder-avatar.svg"; // fallback image
+                  }}
+                />
+              ) : (
+                <div className="size-16 rounded-full bg-gray-300 flex items-center justify-center">
+                  <span className="text-gray-600 text-xs">No Image</span>
+                </div>
+              ),
+              action: (
+                <EmployeeButtons
+                  _id={emp._id}
+                  onEmployeeDelete={handleEmployeeDelete}
+                />
+              ),
+            };
+          })
+          .filter(Boolean); // Remove null entries
+
         console.log("Processed employees data:", data);
         setEmployees(data);
       } else {
         console.error("API returned success: false");
-        setError("Failed to fetch employees: " + (response.data.error || "Unknown error"));
+        setError(
+          "Failed to fetch employees: " +
+            (response.data.error || "Unknown error")
+        );
       }
     } catch (error) {
       console.error("Error fetching employees:", error);
-      
+
       if (axios.isAxiosError(error)) {
         if (error.response) {
           console.error("Error response:", error.response.data);
-          const errorMessage = error.response.data.error || `Server error: ${error.response.status}`;
+          const errorMessage =
+            error.response.data.error ||
+            `Server error: ${error.response.status}`;
           setError(errorMessage);
-          
+
           if (error.response.status === 401) {
             setError("Authentication failed. Please login again.");
             // Optionally redirect to login
@@ -131,7 +140,9 @@ const EmployeeList = () => {
           }
         } else if (error.request) {
           console.error("No response received:", error.request);
-          setError("No response from server. Please check if the server is running.");
+          setError(
+            "No response from server. Please check if the server is running."
+          );
         } else {
           console.error("Request setup error:", error.message);
           setError("Request failed: " + error.message);
@@ -168,8 +179,10 @@ const EmployeeList = () => {
             <h2 className="source-sans-3-bold text-3xl">Manage Employees</h2>
           </div>
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            <p><strong>Error:</strong> {error}</p>
-            <button 
+            <p>
+              <strong>Error:</strong> {error}
+            </p>
+            <button
               onClick={fetchEmployees}
               className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
             >
