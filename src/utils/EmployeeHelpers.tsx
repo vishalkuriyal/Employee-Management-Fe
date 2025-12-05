@@ -70,7 +70,7 @@ export const customStyles = {
 export const fetchDepartments = async () => {
   let departments;
   try {
-    const response = await axios.get("http://localhost:8000/api/department", {
+    const response = await axios.get("http://localhost:8001/api/department", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -98,7 +98,7 @@ export const getEmployees = async (id: string) => {
   let employees;
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/employees/department/${id}`,
+      `http://localhost:8001/api/employees/department/${id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -139,7 +139,7 @@ EmployeeButtonProps) => {
     if (confirm) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/api/employees/${id}`,
+          `http://localhost:8001/api/employees/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

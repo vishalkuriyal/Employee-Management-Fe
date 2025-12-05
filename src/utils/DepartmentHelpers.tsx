@@ -9,7 +9,7 @@ export const columns = [
   {
     name: "Department Name",
     selector: (row: any) => row.dep_name,
-    sortable: true
+    sortable: true,
   },
   {
     name: "Action",
@@ -33,7 +33,7 @@ export const DepartmentButtons = ({
     if (confirm) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/api/department/${id}`,
+          `http://localhost:8001/api/department/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

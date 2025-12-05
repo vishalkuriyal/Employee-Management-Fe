@@ -26,14 +26,11 @@ const ViewShifts = () => {
   const fetchShifts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/shifts",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:8001/api/shifts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         setShifts(response.data.shifts);
@@ -57,7 +54,7 @@ const ViewShifts = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/shifts/${shiftId}`,
+        `http://localhost:8001/api/shifts/${shiftId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -124,10 +121,10 @@ const ViewShifts = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-800">Shift Management</h2>
-            <p className="text-gray-600 mt-1">
-              Total Shifts: {shifts.length}
-            </p>
+            <h2 className="text-3xl font-bold text-gray-800">
+              Shift Management
+            </h2>
+            <p className="text-gray-600 mt-1">Total Shifts: {shifts.length}</p>
           </div>
           <button
             onClick={handleAddShift}

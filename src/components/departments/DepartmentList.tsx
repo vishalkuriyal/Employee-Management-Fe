@@ -22,7 +22,7 @@ const DepartmentList = () => {
   const fetchDepartments = async () => {
     setDepLoading(true);
     try {
-      const response = await axios.get("http://localhost:8000/api/department", {
+      const response = await axios.get("http://localhost:8001/api/department", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -43,7 +43,7 @@ const DepartmentList = () => {
           ),
         }));
         setDepartments(data);
-        setFilteredDepartments(data)
+        setFilteredDepartments(data);
       }
     } catch (error) {
       if (

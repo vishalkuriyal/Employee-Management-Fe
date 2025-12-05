@@ -30,7 +30,7 @@ const Setting = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/setting/change-password",
+        "http://localhost:8001/api/setting/change-password",
         {
           userId: setting.userId,
           oldPassword: setting.oldPassword,
@@ -42,7 +42,7 @@ const Setting = () => {
           },
         }
       );
-      
+
       if (response.data.success) {
         navigate("/employee-dashboard");
       }
@@ -62,9 +62,7 @@ const Setting = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="max-h-[800px] shadow-[0px_0px_20px] shadow-black/10 py-16 px-24 md:w-[600px]">
-        <h1 className="source-sans-3-bold text-4xl mb-8">
-          Change Password
-        </h1>
+        <h1 className="source-sans-3-bold text-4xl mb-8">Change Password</h1>
         {error && (
           <p className="source-sans-3-regular text-red-400 mb-2">{error}</p>
         )}

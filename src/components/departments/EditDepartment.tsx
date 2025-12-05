@@ -11,14 +11,14 @@ const EditDepartment = () => {
   const { id } = useParams();
   const [department, setDepartment] = useState<FormType | null>(null);
   const [depLoading, setDepLoading] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDepatments = async () => {
       setDepLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/department/${id}`,
+          `http://localhost:8001/api/department/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -45,36 +45,41 @@ const EditDepartment = () => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    
+
     // This is safer - check if department exists before updating
     if (department) {
       setDepartment({
         ...department,
-        [name]: value
+        [name]: value,
       });
     }
-  }
+  };
 
   const handleSubmit = async (e: any) => {
-    
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:8000/api/department/${id}`, department, {
-        headers: {
-          'Authorization' : `Bearer ${localStorage.getItem('token')}`
+      const response = await axios.put(
+        `http://localhost:8001/api/department/${id}`,
+        department,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      })
+      );
       if (response.data.success) {
-        navigate('/admin-dashboard/departments')
+        navigate("/admin-dashboard/departments");
       }
     } catch (error) {
-      if (axios.isAxiosError(error) &&
-      error.response &&
-      !error.response.data.success) {
-        alert(error.response.data.error)
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        !error.response.data.success
+      ) {
+        alert(error.response.data.error);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -94,8 +99,8 @@ const EditDepartment = () => {
                 <input
                   type="text"
                   placeholder="Enter Dep Name"
-                    name="dep_name"
-                    value={department?.dep_name}
+                  name="dep_name"
+                  value={department?.dep_name}
                   className="border border-black/30 px-4 py-2 w-fit outline-none"
                   onChange={handleChange}
                 />
@@ -106,8 +111,8 @@ const EditDepartment = () => {
                 </label>
                 <textarea
                   name="description"
-                    placeholder="Description"
-                    value={department?.description}
+                  placeholder="Description"
+                  value={department?.description}
                   className="px-4 py-2 border border-black/30 w-fit outline-none"
                   onChange={handleChange}
                 ></textarea>

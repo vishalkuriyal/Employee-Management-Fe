@@ -54,14 +54,14 @@ const ViewEmployee = () => {
       setLoading(true);
       try {
         const response = await axios.get<ApiResponse>(
-          `http://localhost:8000/api/employees/${id}`,
+          `http://localhost:8001/api/employees/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        
+
         if (response.data.success) {
           setEmployee(response.data.employee);
         }
@@ -80,7 +80,7 @@ const ViewEmployee = () => {
         setLoading(false);
       }
     };
-    
+
     fetchEmployee();
   }, [id]);
 
@@ -99,19 +99,23 @@ const ViewEmployee = () => {
   return (
     <div className="p-4 px-14">
       <h1 className="text-3xl source-sans-3-bold mb-4">Employee Details</h1>
-      
+
       <div className="bg-white shadow rounded p-6">
         <div className="flex items-center mb-6">
           {employee.userId.image && (
-            <img 
-              src={`http://localhost:8000/${employee.userId.image}`} 
+            <img
+              src={`http://localhost:8001/${employee.userId.image}`}
               alt={employee.userId.name}
               className="w-24 h-24 rounded-full object-cover object-top mr-6"
             />
           )}
           <div>
-            <h2 className="text-xl source-sans-3-bold">{employee.userId.name}</h2>
-            <p className="text-gray-600">{employee.employeeId} • {employee.department.dep_name}</p>
+            <h2 className="text-xl source-sans-3-bold">
+              {employee.userId.name}
+            </h2>
+            <p className="text-gray-600">
+              {employee.employeeId} • {employee.department.dep_name}
+            </p>
           </div>
         </div>
 
@@ -119,28 +123,56 @@ const ViewEmployee = () => {
           <div>
             <h3 className="font-medium text-lg mb-2">Personal Information</h3>
             <div className="space-y-2">
-              <p><span className="font-medium">Email:</span> {employee.userId.email}</p>
-              <p><span className="font-medium">Phone:</span> {employee.phoneNumber}</p>
-              <p><span className="font-medium">Gender:</span> {employee.gender}</p>
-              <p><span className="font-medium">Date of Birth:</span> {new Date(employee.dob).toLocaleDateString()}</p>
+              <p>
+                <span className="font-medium">Email:</span>{" "}
+                {employee.userId.email}
+              </p>
+              <p>
+                <span className="font-medium">Phone:</span>{" "}
+                {employee.phoneNumber}
+              </p>
+              <p>
+                <span className="font-medium">Gender:</span> {employee.gender}
+              </p>
+              <p>
+                <span className="font-medium">Date of Birth:</span>{" "}
+                {new Date(employee.dob).toLocaleDateString()}
+              </p>
             </div>
           </div>
 
           <div>
             <h3 className="font-medium text-lg mb-2">Employment Details</h3>
             <div className="space-y-2">
-              <p><span className="font-medium">Department:</span> {employee.department.dep_name}</p>
-              <p><span className="font-medium">Role:</span> {employee.userId.role}</p>
-              <p><span className="font-medium">Salary:</span> ₹ {employee.salary.toLocaleString()}</p>
+              <p>
+                <span className="font-medium">Department:</span>{" "}
+                {employee.department.dep_name}
+              </p>
+              <p>
+                <span className="font-medium">Role:</span>{" "}
+                {employee.userId.role}
+              </p>
+              <p>
+                <span className="font-medium">Salary:</span> ₹{" "}
+                {employee.salary.toLocaleString()}
+              </p>
             </div>
           </div>
 
           <div className="md:col-span-2">
             <h3 className="font-medium text-lg mb-2">Banking Information</h3>
             <div className="space-y-2">
-              <p><span className="font-medium">Bank:</span> {employee.bankBranch}</p>
-              <p><span className="font-medium">IFSC Code:</span> {employee.bankIfsc}</p>
-              <p><span className="font-medium">Account Number:</span> {employee.accountNumber}</p>
+              <p>
+                <span className="font-medium">Bank:</span> {employee.bankBranch}
+              </p>
+              <p>
+                <span className="font-medium">IFSC Code:</span>{" "}
+                {employee.bankIfsc}
+              </p>
+              <p>
+                <span className="font-medium">Account Number:</span>{" "}
+                {employee.accountNumber}
+              </p>
             </div>
           </div>
         </div>

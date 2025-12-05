@@ -28,8 +28,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (token) {
           console.log("Token found, verifying user...");
           const response = await axios.get(
-            "http://localhost:8000/api/auth/verify",
-              
+            "http://localhost:8001/api/auth/verify",
+
             {
               headers: {
                 Authorization: `Bearer ${token}`,

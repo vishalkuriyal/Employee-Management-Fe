@@ -90,7 +90,7 @@ const DashboardOverview: React.FC = () => {
       );
 
       const response = await fetch(
-        "http://localhost:8000/api/dashboard/employee-detail",
+        "http://localhost:8001/api/dashboard/employee-detail",
         {
           method: "GET",
           headers: getAuthHeaders(),
@@ -277,7 +277,7 @@ const DashboardOverview: React.FC = () => {
 
   const { summary, employeesOnLeave } = dashboardData;
 
-  console.log("summary", summary)
+  console.log("summary", summary);
 
   return (
     <div className="px-14 bg-background">

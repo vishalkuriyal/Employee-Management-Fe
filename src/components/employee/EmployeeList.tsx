@@ -44,7 +44,7 @@ const EmployeeList = () => {
 
       console.log("Fetching employees from API...");
 
-      const response = await axios.get("http://localhost:8000/api/employees", {
+      const response = await axios.get("http://localhost:8001/api/employees", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ const EmployeeList = () => {
               dob: emp.dob ? new Date(emp.dob).toDateString() : "N/A",
               image: emp.userId.image ? (
                 <img
-                  src={`http://localhost:8000/${emp.userId.image}`}
+                  src={`http://localhost:8001/${emp.userId.image}`}
                   alt="profile image"
                   className="size-16 rounded-full object-cover object-top"
                   onError={(e) => {

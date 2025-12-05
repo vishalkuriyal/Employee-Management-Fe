@@ -12,61 +12,63 @@ const AddLeaves = () => {
     endDate: "",
     reason: "",
     isHalfDay: false,
-    halfDayPeriod: "morning"
+    halfDayPeriod: "morning",
   });
   const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
-    setLeave((prevState) => ({ 
-      ...prevState, 
-      [name]: type === 'checkbox' ? checked : value 
+    setLeave((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
     }));
-    
+
     // If half day is checked, set fromDate and endDate to same value
-    if (name === 'isHalfDay' && checked) {
+    if (name === "isHalfDay" && checked) {
       if (leave.fromDate) {
-        setLeave(prev => ({ ...prev, endDate: prev.fromDate }));
+        setLeave((prev) => ({ ...prev, endDate: prev.fromDate }));
       }
     }
   };
 
   const handleFromDateChange = (e: any) => {
     const { value } = e.target;
-    setLeave(prevState => ({
+    setLeave((prevState) => ({
       ...prevState,
       fromDate: value,
       // If half day, set end date same as from date
-      endDate: prevState.isHalfDay ? value : prevState.endDate
+      endDate: prevState.isHalfDay ? value : prevState.endDate,
     }));
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
+
     // Debug logging
-    console.log('Form data being sent:', leave);
-    
+    console.log("Form data being sent:", leave);
+
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/leave/add', 
+        "http://localhost:8001/api/leave/add",
         leave,
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-      
+
       if (response.data.success) {
-        navigate('/employee-dashboard/leaves');
+        navigate("/employee-dashboard/leaves");
       }
     } catch (error) {
-      if (axios.isAxiosError(error) &&
-          error.response &&
-          error.response.data &&
-          !error.response.data.success) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.data &&
+        !error.response.data.success
+      ) {
         alert(error.response.data.error);
       } else {
         console.error("Upload error:", error);
@@ -134,7 +136,7 @@ const AddLeaves = () => {
               Half Day Leave
             </label>
           </div>
-          
+
           {leave.isHalfDay && (
             <div className="flex items-center gap-4">
               <label className="source-sans-3-regular">Period:</label>
@@ -144,7 +146,7 @@ const AddLeaves = () => {
                     type="radio"
                     name="halfDayPeriod"
                     value="morning"
-                    checked={leave.halfDayPeriod === 'morning'}
+                    checked={leave.halfDayPeriod === "morning"}
                     onChange={handleChange}
                     className="mr-1"
                   />
@@ -155,7 +157,7 @@ const AddLeaves = () => {
                     type="radio"
                     name="halfDayPeriod"
                     value="afternoon"
-                    checked={leave.halfDayPeriod === 'afternoon'}
+                    checked={leave.halfDayPeriod === "afternoon"}
                     onChange={handleChange}
                     className="mr-1"
                   />
@@ -178,7 +180,10 @@ const AddLeaves = () => {
               required
             />
           </div>
-          <button type="submit" className="py-4 px-16 bg-primary rounded-xl h-fit text-white source-sans-3-regular cursor-pointer">
+          <button
+            type="submit"
+            className="py-4 px-16 bg-primary rounded-xl h-fit text-white source-sans-3-regular cursor-pointer"
+          >
             Submit
           </button>
         </div>

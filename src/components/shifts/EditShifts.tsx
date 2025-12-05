@@ -51,7 +51,7 @@ const EditShift = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/shifts/${id}`,
+          `http://localhost:8001/api/shifts/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +70,8 @@ const EditShift = () => {
             minimumHours: shiftData.minimumHours || 8,
             isCrossMidnight: shiftData.isCrossMidnight || false,
             description: shiftData.description || "",
-            isActive: shiftData.isActive !== undefined ? shiftData.isActive : true,
+            isActive:
+              shiftData.isActive !== undefined ? shiftData.isActive : true,
           });
         }
       } catch (error) {
@@ -103,7 +104,6 @@ const EditShift = () => {
     }
   };
 
-  
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -125,7 +125,7 @@ const EditShift = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/shifts/${id}`,
+        `http://localhost:8001/api/shifts/${id}`,
         shift,
         {
           headers: {

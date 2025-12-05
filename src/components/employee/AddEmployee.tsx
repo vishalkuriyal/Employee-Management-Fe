@@ -77,14 +77,14 @@ const AddEmployee = () => {
 
         // ⭐ NEW: Fetch shifts
         const shiftsResponse = await axios.get(
-          'http://localhost:8000/api/shifts',
+          "http://localhost:8001/api/shifts",
           {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
-        
+
         if (shiftsResponse.data.success) {
           setShifts(shiftsResponse.data.shifts);
         }
@@ -97,27 +97,29 @@ const AddEmployee = () => {
     fetchData();
   }, []);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value, type } = e.target;
-    
+
     // Handle file input separately
     if (type === "file") {
       const fileInput = e.target as HTMLInputElement;
       const files = fileInput.files;
-      
+
       if (files && files.length > 0) {
         setFormData((prevData) => ({
           ...prevData,
-          [name]: files[0]
+          [name]: files[0],
         }));
       }
     } else {
       // Type assertion to ensure TypeScript knows this is a valid key
       const fieldName = name as keyof FormDataType;
-      
+
       setFormData((prevData) => ({
         ...prevData,
-        [fieldName]: type === "number" ? Number(value) : value
+        [fieldName]: type === "number" ? Number(value) : value,
       }));
     }
   };
@@ -133,7 +135,7 @@ const AddEmployee = () => {
 
     // Create a new FormData object
     const formDataObj = new FormData();
-    
+
     // Add text fields to FormData
     formDataObj.append("name", formData.name);
     formDataObj.append("email", formData.email);
@@ -150,7 +152,7 @@ const AddEmployee = () => {
     formDataObj.append("bankBranch", formData.bankBranch);
     formDataObj.append("bankIfsc", formData.bankIfsc);
     formDataObj.append("accountNumber", formData.accountNumber);
-    
+
     // Add the file separately if it exists
     if (formData.image) {
       formDataObj.append("image", formData.image);
@@ -158,24 +160,26 @@ const AddEmployee = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/employees/add', 
+        "http://localhost:8001/api/employees/add",
         formDataObj,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-      
+
       if (response.data.success) {
-        navigate('/admin-dashboard/employees');
+        navigate("/admin-dashboard/employees");
       }
     } catch (error) {
-      if (axios.isAxiosError(error) &&
-          error.response &&
-          error.response.data &&
-          !error.response.data.success) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.data &&
+        !error.response.data.success
+      ) {
         alert(error.response.data.error);
       } else {
         console.error("Upload error:", error);
@@ -221,7 +225,10 @@ const AddEmployee = () => {
               />
             </div>
             <div className="flex flex-col">
-              <label className="source-sans-3-medium text-lg" htmlFor="password">
+              <label
+                className="source-sans-3-medium text-lg"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input

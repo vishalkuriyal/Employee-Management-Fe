@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Search, ChevronLeft, ChevronRight, User, FileText } from 'lucide-react';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  User,
+  FileText,
+} from "lucide-react";
 
 interface Leave {
   _id: string;
@@ -14,7 +20,7 @@ interface Leave {
   isHalfDay: boolean;
   halfDayPeriod?: string;
   reason: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
   appliedDate: string;
 }
 
@@ -33,21 +39,21 @@ const EmployeeLeaves = () => {
     totalPages: 1,
     totalCount: 0,
     hasNextPage: false,
-    hasPrevPage: false
+    hasPrevPage: false,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Filters
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [leaveTypeFilter, setLeaveTypeFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   // Modal states
   const [selectedLeave, setSelectedLeave] = useState<Leave | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [comments, setComments] = useState('');
+  const [comments, setComments] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
   const fetchLeaves = async () => {
@@ -56,16 +62,16 @@ const EmployeeLeaves = () => {
       const params = {
         page: currentPage,
         limit: 10,
-        ...(statusFilter !== 'all' && { status: statusFilter }),
-        ...(leaveTypeFilter !== 'all' && { leaveType: leaveTypeFilter }),
-        ...(searchQuery && { search: searchQuery })
+        ...(statusFilter !== "all" && { status: statusFilter }),
+        ...(leaveTypeFilter !== "all" && { leaveType: leaveTypeFilter }),
+        ...(searchQuery && { search: searchQuery }),
       };
 
-      const response = await axios.get('http://localhost:8000/api/leave/all', {
+      const response = await axios.get("http://localhost:8001/api/leave/all", {
         params,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
       if (response.data.success) {
@@ -74,11 +80,11 @@ const EmployeeLeaves = () => {
         setError(null);
       }
     } catch (error) {
-      console.error('Error fetching leaves:', error);
+      console.error("Error fetching leaves:", error);
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data.error || 'Failed to fetch leave requests');
+        setError(error.response.data.error || "Failed to fetch leave requests");
       } else {
-        setError('Failed to fetch leave requests');
+        setError("Failed to fetch leave requests");
       }
     } finally {
       setLoading(false);
@@ -89,19 +95,22 @@ const EmployeeLeaves = () => {
     fetchLeaves();
   }, [currentPage, statusFilter, leaveTypeFilter, searchQuery]);
 
-  const handleStatusUpdate = async (leaveId: string, newStatus: 'approved' | 'rejected') => {
+  const handleStatusUpdate = async (
+    leaveId: string,
+    newStatus: "approved" | "rejected"
+  ) => {
     try {
       setActionLoading(true);
       const response = await axios.put(
-        `http://localhost:8000/api/leave/status/${leaveId}`,
+        `http://localhost:8001/api/leave/status/${leaveId}`,
         {
           status: newStatus,
-          comments: comments
+          comments: comments,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 
@@ -109,14 +118,14 @@ const EmployeeLeaves = () => {
         fetchLeaves();
         setShowModal(false);
         setSelectedLeave(null);
-        setComments('');
+        setComments("");
       }
     } catch (error) {
-      console.error('Error updating leave status:', error);
+      console.error("Error updating leave status:", error);
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data.error || 'Failed to update leave status');
+        setError(error.response.data.error || "Failed to update leave status");
       } else {
-        setError('Failed to update leave status');
+        setError("Failed to update leave status");
       }
     } finally {
       setActionLoading(false);
@@ -126,41 +135,50 @@ const EmployeeLeaves = () => {
   const openModal = (leave: Leave) => {
     setSelectedLeave(leave);
     setShowModal(true);
-    setComments('');
+    setComments("");
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getLeaveTypeColor = (type: string) => {
     switch (type) {
-      case 'sick': return 'bg-blue-100 text-blue-800';
-      case 'casual': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "sick":
+        return "bg-blue-100 text-blue-800";
+      case "casual":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      timeZone: "UTC"
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
     });
   };
 
-  console.log(leaves)
+  console.log(leaves);
   return (
     <div className="px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Leave Requests</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Leave Requests
+        </h1>
         <p className="text-gray-600">Manage employee leave applications</p>
       </div>
 
@@ -205,7 +223,10 @@ const EmployeeLeaves = () => {
           {/* Stats */}
           <div className="flex items-center justify-center bg-gray-50 rounded-lg px-4 py-2">
             <span className="text-sm text-gray-600">
-              Total: <span className="font-semibold text-gray-900">{pagination.totalCount}</span>
+              Total:{" "}
+              <span className="font-semibold text-gray-900">
+                {pagination.totalCount}
+              </span>
             </span>
           </div>
         </div>
@@ -223,13 +244,19 @@ const EmployeeLeaves = () => {
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="ml-3 text-gray-600">Loading leave requests...</span>
+            <span className="ml-3 text-gray-600">
+              Loading leave requests...
+            </span>
           </div>
         ) : leaves.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No leave requests found</h3>
-            <p className="text-gray-500">No leave requests match your current filters.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No leave requests found
+            </h3>
+            <p className="text-gray-500">
+              No leave requests match your current filters.
+            </p>
           </div>
         ) : (
           <>
@@ -281,8 +308,14 @@ const EmployeeLeaves = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getLeaveTypeColor(leave.leaveType)}`}>
-                          {leave.leaveType.charAt(0).toUpperCase() + leave.leaveType.slice(1)} Leave
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getLeaveTypeColor(
+                            leave.leaveType
+                          )}`}
+                        >
+                          {leave.leaveType.charAt(0).toUpperCase() +
+                            leave.leaveType.slice(1)}{" "}
+                          Leave
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -293,7 +326,8 @@ const EmployeeLeaves = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {leave.totalDays} {leave.totalDays === 1 ? 'day' : 'days'}
+                          {leave.totalDays}{" "}
+                          {leave.totalDays === 1 ? "day" : "days"}
                           {leave.isHalfDay && (
                             <span className="text-xs text-gray-500 block">
                               ({leave.halfDayPeriod} half)
@@ -302,8 +336,13 @@ const EmployeeLeaves = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(leave.status)}`}>
-                          {leave.status.charAt(0).toUpperCase() + leave.status.slice(1)}
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
+                            leave.status
+                          )}`}
+                        >
+                          {leave.status.charAt(0).toUpperCase() +
+                            leave.status.slice(1)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -313,17 +352,21 @@ const EmployeeLeaves = () => {
                         >
                           View Details
                         </button>
-                        {leave.status === 'pending' && (
+                        {leave.status === "pending" && (
                           <div className="inline-flex space-x-1 mt-1">
                             <button
-                              onClick={() => handleStatusUpdate(leave._id, 'approved')}
+                              onClick={() =>
+                                handleStatusUpdate(leave._id, "approved")
+                              }
                               disabled={actionLoading}
                               className="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-2 py-1 rounded text-xs transition-colors disabled:opacity-50"
                             >
                               Approve
                             </button>
                             <button
-                              onClick={() => handleStatusUpdate(leave._id, 'rejected')}
+                              onClick={() =>
+                                handleStatusUpdate(leave._id, "rejected")
+                              }
                               disabled={actionLoading}
                               className="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-2 py-1 rounded text-xs transition-colors disabled:opacity-50"
                             >
@@ -344,14 +387,16 @@ const EmployeeLeaves = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex-1 flex justify-between sm:hidden">
                     <button
-                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
                       disabled={!pagination.hasPrevPage}
                       className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                     >
                       Previous
                     </button>
                     <button
-                      onClick={() => setCurrentPage(prev => prev + 1)}
+                      onClick={() => setCurrentPage((prev) => prev + 1)}
                       disabled={!pagination.hasNextPage}
                       className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                     >
@@ -361,23 +406,30 @@ const EmployeeLeaves = () => {
                   <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm text-gray-700">
-                        Showing{' '}
+                        Showing{" "}
                         <span className="font-medium">
                           {(pagination.currentPage - 1) * 10 + 1}
-                        </span>{' '}
-                        to{' '}
+                        </span>{" "}
+                        to{" "}
                         <span className="font-medium">
-                          {Math.min(pagination.currentPage * 10, pagination.totalCount)}
-                        </span>{' '}
-                        of{' '}
-                        <span className="font-medium">{pagination.totalCount}</span>{' '}
+                          {Math.min(
+                            pagination.currentPage * 10,
+                            pagination.totalCount
+                          )}
+                        </span>{" "}
+                        of{" "}
+                        <span className="font-medium">
+                          {pagination.totalCount}
+                        </span>{" "}
                         results
                       </p>
                     </div>
                     <div>
                       <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                         <button
-                          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                          onClick={() =>
+                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                          }
                           disabled={!pagination.hasPrevPage}
                           className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
                         >
@@ -387,7 +439,7 @@ const EmployeeLeaves = () => {
                           {pagination.currentPage} of {pagination.totalPages}
                         </span>
                         <button
-                          onClick={() => setCurrentPage(prev => prev + 1)}
+                          onClick={() => setCurrentPage((prev) => prev + 1)}
                           disabled={!pagination.hasNextPage}
                           className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
                         >
@@ -408,34 +460,55 @@ const EmployeeLeaves = () => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Leave Details</h3>
-              
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Leave Details
+              </h3>
+
               <div className="space-y-3 mb-6">
                 <div>
-                  <span className="text-sm font-medium text-gray-700">Employee:</span>
-                  <span className="ml-2 text-sm text-gray-900">{selectedLeave.employeeName}</span>
-                </div>
-                <div>
-                  <span className="text-sm font-medium text-gray-700">Leave Type:</span>
-                  <span className="ml-2 text-sm text-gray-900 capitalize">{selectedLeave.leaveType}</span>
-                </div>
-                <div>
-                  <span className="text-sm font-medium text-gray-700">Duration:</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Employee:
+                  </span>
                   <span className="ml-2 text-sm text-gray-900">
-                    {formatDate(selectedLeave.fromDate)} - {formatDate(selectedLeave.endDate)}
+                    {selectedLeave.employeeName}
                   </span>
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-gray-700">Total Days:</span>
-                  <span className="ml-2 text-sm text-gray-900">{selectedLeave.totalDays}</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Leave Type:
+                  </span>
+                  <span className="ml-2 text-sm text-gray-900 capitalize">
+                    {selectedLeave.leaveType}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-gray-700">Reason:</span>
-                  <p className="mt-1 text-sm text-gray-900">{selectedLeave.reason}</p>
+                  <span className="text-sm font-medium text-gray-700">
+                    Duration:
+                  </span>
+                  <span className="ml-2 text-sm text-gray-900">
+                    {formatDate(selectedLeave.fromDate)} -{" "}
+                    {formatDate(selectedLeave.endDate)}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-gray-700">
+                    Total Days:
+                  </span>
+                  <span className="ml-2 text-sm text-gray-900">
+                    {selectedLeave.totalDays}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-gray-700">
+                    Reason:
+                  </span>
+                  <p className="mt-1 text-sm text-gray-900">
+                    {selectedLeave.reason}
+                  </p>
                 </div>
               </div>
 
-              {selectedLeave.status === 'pending' && (
+              {selectedLeave.status === "pending" && (
                 <>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -452,18 +525,22 @@ const EmployeeLeaves = () => {
 
                   <div className="flex space-x-3">
                     <button
-                      onClick={() => handleStatusUpdate(selectedLeave._id, 'approved')}
+                      onClick={() =>
+                        handleStatusUpdate(selectedLeave._id, "approved")
+                      }
                       disabled={actionLoading}
                       className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 disabled:opacity-50"
                     >
-                      {actionLoading ? 'Processing...' : 'Approve'}
+                      {actionLoading ? "Processing..." : "Approve"}
                     </button>
                     <button
-                      onClick={() => handleStatusUpdate(selectedLeave._id, 'rejected')}
+                      onClick={() =>
+                        handleStatusUpdate(selectedLeave._id, "rejected")
+                      }
                       disabled={actionLoading}
                       className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50"
                     >
-                      {actionLoading ? 'Processing...' : 'Reject'}
+                      {actionLoading ? "Processing..." : "Reject"}
                     </button>
                   </div>
                 </>
@@ -473,7 +550,7 @@ const EmployeeLeaves = () => {
                 onClick={() => {
                   setShowModal(false);
                   setSelectedLeave(null);
-                  setComments('');
+                  setComments("");
                 }}
                 className="mt-3 w-full bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
               >
@@ -487,4 +564,4 @@ const EmployeeLeaves = () => {
   );
 };
 
-export default EmployeeLeaves; 
+export default EmployeeLeaves;
