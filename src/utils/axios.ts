@@ -14,7 +14,7 @@ export const getImageUrl = (imagePath: string | undefined): string => {
   const cleanPath = imagePath.replace(/^\/+/, '').replace(/^uploads\//, '');
 
   // Build correct URL with uploads prefix
-  return `${UPLOADS_BASE_URL}/api/uploads/${cleanPath}`;
+  return `${UPLOADS_BASE_URL}/uploads/${cleanPath}`;
 };
 
 const api = axios.create({
