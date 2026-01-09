@@ -64,6 +64,7 @@ type FormDataType = {
   bankIfsc: string;
   accountNumber: string;
   image: File | null;
+  password?: string;
 };
 
 const EditEmployee = () => {
@@ -91,6 +92,7 @@ const EditEmployee = () => {
     bankIfsc: "",
     accountNumber: "",
     image: null,
+    password: "",
   });
 
   // ⭐ NEW: Fetch departments and shifts
@@ -213,6 +215,10 @@ const EditEmployee = () => {
     formDataObj.append("bankBranch", formData.bankBranch);
     formDataObj.append("bankIfsc", formData.bankIfsc);
     formDataObj.append("accountNumber", formData.accountNumber);
+
+    if (formData.password) {
+      formDataObj.append("password", formData.password);
+    }
 
     if (formData.image) {
       formDataObj.append("image", formData.image);
@@ -417,6 +423,19 @@ const EditEmployee = () => {
                 <option value="admin">Admin</option>
                 <option value="employee">Employee</option>
               </select>
+            </div>
+            <div className="flex flex-col">
+              <label className="source-sans-3-medium">
+                Password (Leave empty to keep current)
+              </label>
+              <input
+                type="password"
+                placeholder="Enter New Password"
+                name="password"
+                value={formData.password || ""}
+                onChange={handleChange}
+                className="px-4 py-2 border-b border-black/30 w-full outline-none"
+              />
             </div>
             <div className="flex flex-col">
               <label className="source-sans-3-medium">Upload Image</label>
