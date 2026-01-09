@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
-import { FaMoneyBillWave } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 
 type Props = {
