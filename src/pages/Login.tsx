@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,6 +12,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -28,6 +30,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     // Fix: Proper type instead of 'any'
     e.preventDefault();
+    setIsLoading(true);
 
     // Save or clear credentials based on rememberMe
     if (rememberMe) {
@@ -66,6 +69,8 @@ const Login = () => {
       } else {
         setError("Server Error");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -124,9 +129,17 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="px-8 py-2 source-sans-3-semibold border rounded-lg border-black/30 bg-primary text-white"
+            disabled={isLoading}
+            className="px-8 py-2 source-sans-3-semibold border rounded-lg border-black/30 bg-primary text-white flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login
+            {isLoading ? (
+              <>
+                <AiOutlineLoading3Quarters className="animate-spin" />
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
       </div>

@@ -1,5 +1,7 @@
 import { useAuth } from "../../context/AuthContext";
 import { RiLogoutCircleRFill } from "react-icons/ri";
+import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type Props = {
   toggleSidebar: () => void;
@@ -7,6 +9,12 @@ type Props = {
 
 const Navbar = ({ toggleSidebar }: Props) => {
   const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await logout();
+  };
   return (
     <div className="h-fit px-14 bg-background">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-[#E0E0E0] py-6 ">
@@ -20,11 +28,24 @@ const Navbar = ({ toggleSidebar }: Props) => {
           Welcome {user?.name}
         </p>
         <div className="flex sm:items-center gap-10">
-          <button className="flex gap-2 items-center bg-secondary px-6 py-2 cursor-pointer w-fit">
-            <RiLogoutCircleRFill className="text-white" />
-            <span className="text-white source-sans-3-medium" onClick={logout}>
-              Logout
-            </span>
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="flex gap-2 items-center bg-secondary px-6 py-2 cursor-pointer w-fit disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoggingOut ? (
+              <>
+                <AiOutlineLoading3Quarters className="text-white animate-spin" />
+                <span className="text-white source-sans-3-medium">
+                  Logging out...
+                </span>
+              </>
+            ) : (
+              <>
+                <RiLogoutCircleRFill className="text-white" />
+                <span className="text-white source-sans-3-medium">Logout</span>
+              </>
+            )}
           </button>
           <div className="flex gap-4 items-center">
             <div className="source-sans-3-regular">
