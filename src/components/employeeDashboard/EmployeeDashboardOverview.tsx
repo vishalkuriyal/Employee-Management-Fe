@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LogIn, LogOut } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../utils/axios";
