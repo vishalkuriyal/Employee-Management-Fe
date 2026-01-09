@@ -103,7 +103,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
               <span className="source-sans-3-semibold ">Attendance</span>
             </div>
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/admin-dashboard/salary/add"
             className={({ isActive }) =>
               `${
@@ -115,7 +115,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
               <FaMoneyBillWave className="" />{" "}
               <span className="source-sans-3-semibold ">Salary</span>
             </div>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/admin-dashboard/settings"
             className={({ isActive }) =>
@@ -216,7 +216,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
               <span className="source-sans-3-semibold ">Attendance</span>
             </div>
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/admin-dashboard/salary/add"
             className={({ isActive }) =>
               `${
@@ -228,7 +228,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
               <FaMoneyBillWave className="" />{" "}
               <span className="source-sans-3-semibold ">Salary</span>
             </div>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/admin-dashboard/settings"
             className={({ isActive }) =>
