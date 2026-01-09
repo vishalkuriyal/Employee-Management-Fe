@@ -3,6 +3,7 @@ import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
 import api from "../../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const AddLeaves = () => {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ const AddLeaves = () => {
     halfDayPeriod: "morning",
   });
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -51,6 +53,7 @@ const AddLeaves = () => {
     try {
       const response = await api.post(`/api/leave/add`, leave);
 
+      setIsSubmitting(true);
       if (response.data.success) {
         navigate("/employee-dashboard/leaves");
       }
@@ -69,6 +72,7 @@ const AddLeaves = () => {
     }
   };
 
+  setIsSubmitting(false);
   return (
     <div className="px-20 py-28">
       <h2 className="source-sans-3-semibold">Applying for Leave</h2>
@@ -174,9 +178,17 @@ const AddLeaves = () => {
           </div>
           <button
             type="submit"
-            className="py-4 px-16 bg-primary rounded-xl h-fit text-white source-sans-3-regular cursor-pointer"
+            disabled={isSubmitting}
+            className="py-4 px-16 bg-primary rounded-xl h-fit text-white source-sans-3-regular cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Submit
+            {isSubmitting ? (
+              <>
+                <AiOutlineLoading3Quarters className="animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
       </form>

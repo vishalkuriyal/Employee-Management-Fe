@@ -25,6 +25,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
         <div className="">
           <NavLink
             to="/admin-dashboard"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -39,6 +40,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/employees"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -52,6 +54,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/departments"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -65,6 +68,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/shifts"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -78,6 +82,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/leaves"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -91,6 +96,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/attendance"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -117,6 +123,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink> */}
           <NavLink
             to="/admin-dashboard/settings"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -138,6 +145,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
         <div className="">
           <NavLink
             to="/admin-dashboard"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -152,6 +160,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/employees"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -165,6 +174,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/departments"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -178,6 +188,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/shifts"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -191,6 +202,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/leaves"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -204,6 +216,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink>
           <NavLink
             to="/admin-dashboard/attendance"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
@@ -230,6 +243,7 @@ const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
           </NavLink> */}
           <NavLink
             to="/admin-dashboard/settings"
+            onClick={onClose}
             className={({ isActive }) =>
               `${
                 isActive ? "bg-white !text-black" : "!text-white"
