@@ -1,18 +1,21 @@
-import { Outlet } from "react-router-dom"
-import Sidebar from "../components/employeeDashboard/Sidebar"
-import Navbar from "../components/dashboard/Navbar"
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import Sidebar from "../components/employeeDashboard/Sidebar";
+import Navbar from "../components/dashboard/Navbar";
 
 const EmployeeDashboard = () => {
-  console.log
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const toggleSidebar = () => setIsSidebarOpen((s) => !s);
+
   return (
     <div className="flex bg-background">
-      <Sidebar />
+      {isSidebarOpen && <Sidebar />}
       <div className="flex-1/2">
-        <Navbar />
+        <Navbar toggleSidebar={toggleSidebar} />
         <Outlet />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EmployeeDashboard
+export default EmployeeDashboard;
