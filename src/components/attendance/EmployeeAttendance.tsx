@@ -147,6 +147,8 @@ const EmployeeAttendance: React.FC = () => {
     }
   };
 
+  console.log("Attendance Data:", attendanceData);
+
   const fetchStatistics = async () => {
     try {
       // Calculate start and end date based on selected date

@@ -5,89 +5,246 @@ import { SlCalender } from "react-icons/sl";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 
-const AdminSidebar = () => {
+type Props = {
+  isOpen?: boolean;
+  onClose?: () => void;
+};
+
+const AdminSidebar = ({ isOpen = false, onClose }: Props) => {
   return (
-    <div className="w-[350px] bg-secondary min-h-screen py-5 pl-[18px]">
-      <h2 className="source-sans-3-bold text-white text-2xl pb-4 border-b mr-[18px] text-center ">
-        {" "}
-        Admin Dashboard
-      </h2>
-      <div className="">
-        <NavLink
-          to="/admin-dashboard"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`}
-          end
-        >
-          <div className="flex gap-5 items-center">
-            <MdDashboard className="" />{" "}
-            <span className="source-sans-3-semibold ">Dashboard</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/employees"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <FaUsers className="" />{" "}
-            <span className="source-sans-3-semibold ">Employees</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/departments"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <FaUsers className="" />{" "}
-            <span className="source-sans-3-semibold ">Departments</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/shifts"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <FaUsers className="" />{" "}
-            <span className="source-sans-3-semibold ">Shifts</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/leaves"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <SlCalender className="" />{" "}
-            <span className="source-sans-3-semibold ">Leaves</span>
-          </div>
-        </NavLink>
-         <NavLink
-          to="/admin-dashboard/attendance"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <SlCalender className="" />{" "}
-            <span className="source-sans-3-semibold ">Attendance</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/salary/add"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <FaMoneyBillWave className="" />{" "}
-            <span className="source-sans-3-semibold ">Salary</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/settings"
-          className={({ isActive }) => `${isActive ? "bg-white !text-black" : "!text-white"} flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black` }
-        >
-          <div className="flex gap-5 items-center">
-            <IoSettings className="" />{" "}
-            <span className="source-sans-3-semibold ">Settings</span>
-          </div>
-        </NavLink>
+    <>
+      <div
+        className={`bg-secondary h-full absolute w-full md:hidden ${
+          isOpen ? "z-50 block" : "hidden -z-20"
+        }`}
+      >
+        <div className="p-4">
+          <button className="text-white mb-4" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        <div className="">
+          <NavLink
+            to="/admin-dashboard"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+            end
+          >
+            <div className="flex gap-5 items-center">
+              <MdDashboard className="" />{" "}
+              <span className="source-sans-3-semibold ">Dashboard</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/employees"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaUsers className="" />{" "}
+              <span className="source-sans-3-semibold ">Employees</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/departments"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaUsers className="" />{" "}
+              <span className="source-sans-3-semibold ">Departments</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/shifts"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaUsers className="" />{" "}
+              <span className="source-sans-3-semibold ">Shifts</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/leaves"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <SlCalender className="" />{" "}
+              <span className="source-sans-3-semibold ">Leaves</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/attendance"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <SlCalender className="" />{" "}
+              <span className="source-sans-3-semibold ">Attendance</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/salary/add"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaMoneyBillWave className="" />{" "}
+              <span className="source-sans-3-semibold ">Salary</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/settings"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <IoSettings className="" />{" "}
+              <span className="source-sans-3-semibold ">Settings</span>
+            </div>
+          </NavLink>
+        </div>
       </div>
-    </div>
+      <div className="w-[350px] bg-secondary min-h-screen py-5 pl-[18px] hidden md:block">
+        <h2 className="source-sans-3-bold text-white text-2xl pb-4 border-b mr-[18px] text-center ">
+          {" "}
+          Admin Dashboard
+        </h2>
+        <div className="">
+          <NavLink
+            to="/admin-dashboard"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+            end
+          >
+            <div className="flex gap-5 items-center">
+              <MdDashboard className="" />{" "}
+              <span className="source-sans-3-semibold ">Dashboard</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/employees"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaUsers className="" />{" "}
+              <span className="source-sans-3-semibold ">Employees</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/departments"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaUsers className="" />{" "}
+              <span className="source-sans-3-semibold ">Departments</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/shifts"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaUsers className="" />{" "}
+              <span className="source-sans-3-semibold ">Shifts</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/leaves"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <SlCalender className="" />{" "}
+              <span className="source-sans-3-semibold ">Leaves</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/attendance"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <SlCalender className="" />{" "}
+              <span className="source-sans-3-semibold ">Attendance</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/salary/add"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <FaMoneyBillWave className="" />{" "}
+              <span className="source-sans-3-semibold ">Salary</span>
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin-dashboard/settings"
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-white !text-black" : "!text-white"
+              } flex pl-10 py-4 rounded-l-full mt-5 hover:bg-white hover:!text-black`
+            }
+          >
+            <div className="flex gap-5 items-center">
+              <IoSettings className="" />{" "}
+              <span className="source-sans-3-semibold ">Settings</span>
+            </div>
+          </NavLink>
+        </div>
+      </div>
+    </>
   );
 };
 

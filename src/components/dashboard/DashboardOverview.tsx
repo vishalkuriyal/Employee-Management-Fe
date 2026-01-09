@@ -219,7 +219,7 @@ const DashboardOverview: React.FC = () => {
   return (
     <div className="px-14 bg-background">
       {/* Header with Date Selector */}
-      <div className="flex justify-between items-center mt-6 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center mt-6 mb-6">
         <div>
           <h1 className="text-2xl source-sans-3-bold text-gray-900">
             Employee Dashboard
@@ -253,8 +253,8 @@ const DashboardOverview: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex mt-10 gap-7">
-        <div className="w-[35%]">
+      <div className="flex flex-col sm:flex-row mt-10 gap-7">
+        <div className="sm:w-[35%]">
           {/* Total Employees Card */}
           <div className="py-16 px-10 flex justify-between items-center border border-[#E1E1E1] bg-white mb-4">
             <div className="text-[#606060] source-sans-3-semibold">
@@ -312,7 +312,7 @@ const DashboardOverview: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-[60%] flex flex-col justify-end">
+        <div className="sm:w-[60%] flex flex-col justify-end">
           <div className="flex justify-between items-center mb-4">
             <h3 className="source-sans-3-semibold text-gray-900">
               Who is on leave today?
