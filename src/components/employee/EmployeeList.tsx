@@ -36,25 +36,19 @@ const EmployeeList = () => {
 
     try {
       const token = localStorage.getItem("token");
-      console.log("Token exists:", !!token);
 
       if (!token) {
         setError("No authentication token found");
         return;
       }
 
-      console.log("Fetching employees from API...");
-
       const response = await api.get(`/api/employees`);
 
-      console.log("API Response:", response.data);
 
       if (response.data.success) {
         const employeesData = response.data.employees;
-        console.log("Employees data:", employeesData);
 
         if (!employeesData || employeesData.length === 0) {
-          console.log("No employees found in database");
           setEmployees([]);
           return;
         }
@@ -62,7 +56,6 @@ const EmployeeList = () => {
         let sno = 1;
         const data = employeesData
           .map((emp: any) => {
-            console.log("Processing employee:", emp);
 
             // Check if required nested data exists
             if (!emp.userId) {
@@ -110,7 +103,6 @@ const EmployeeList = () => {
           })
           .filter(Boolean); // Remove null entries
 
-        console.log("Processed employees data:", data);
         setEmployees(data);
       } else {
         console.error("API returned success: false");
@@ -156,8 +148,7 @@ const EmployeeList = () => {
     fetchEmployees();
   }, []);
 
-  console.log("Current employees state:", employees);
-
+console.log("employee datas", employees);
   if (empLoading) {
     return (
       <div className="px-14 bg-background">

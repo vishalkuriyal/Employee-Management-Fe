@@ -5,13 +5,16 @@ import Navbar from "../components/dashboard/Navbar";
 
 const EmployeeDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const toggleSidebar = () => setIsSidebarOpen((s) => !s);
+
 
   return (
-    <div className="flex bg-background">
-      {isSidebarOpen && <Sidebar />}
-      <div className="flex-1/2">
-        <Navbar toggleSidebar={toggleSidebar} />
+    <div className="flex flex-col sm:flex-row bg-background relative">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+      <div className="sm:flex-1/2">
+        <Navbar toggleSidebar={() => setIsSidebarOpen((prev) => !prev)} />
         <Outlet />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import api, { getImageUrl} from "../../utils/axios";
+import api, { getImageUrl } from "../../utils/axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -90,8 +90,9 @@ const ViewEmployee = () => {
     return <div>No employee data found</div>;
   }
 
+
   return (
-    <div className="p-4 px-14">
+    <div className="p-4 px-5 md:px-14">
       <h1 className="text-3xl source-sans-3-bold mb-4">Employee Details</h1>
 
       <div className="bg-white shadow rounded p-6">
@@ -101,6 +102,10 @@ const ViewEmployee = () => {
               src={getImageUrl(employee.userId.image)}
               alt={employee.userId.name}
               className="w-24 h-24 rounded-full object-cover object-top mr-6"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/placeholder-avatar.svg";
+              }}
             />
           )}
           <div>

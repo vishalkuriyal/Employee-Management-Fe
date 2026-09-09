@@ -61,7 +61,7 @@ const EmployeeDashboardOverview = () => {
       });
       if (res.data.success && res.data.attendance) {
         const absent = res.data.attendance.filter(
-          (rec: any) => rec.status === "absent"
+          (rec: any) => rec.status === "absent",
         );
         setAbsentDays(absent);
       }
@@ -158,14 +158,14 @@ const EmployeeDashboardOverview = () => {
   };
 
   return (
-    <div className="py-28 px-16">
-      <div className="grid grid-cols-3 gap-10 items-center justify-center">
+    <div className="py-8 md:py-28 px-5 md:px-16">
+      <div className="grid md:grid-cols-3 gap-10 md:items-center md:justify-center">
         <div className="rounded-2xl overflow-hidden">
           <div className="py-8 flex justify-center bg-primary">
             <p className="source-sans-3-regular text-white">Mark Attendance</p>
           </div>
-          <div className="bg-white h-[400px] flex flex-col items-center justify-center gap-6">
-            <div className="source-sans-3-bold text-3xl">
+          <div className="bg-white h-[300px] md:h-[400px] flex flex-col items-center justify-center gap-6">
+            <div className="source-sans-3-bold text-2xl md:text-3xl">
               Today's Attendance
             </div>
             {!today || !today.hasCheckedIn ? (
@@ -215,7 +215,7 @@ const EmployeeDashboardOverview = () => {
           <div className="py-8 flex justify-center bg-primary">
             <p className="source-sans-3-regular text-white">Leaves Taken</p>
           </div>
-          <div className="bg-white h-[400px] overflow-y-auto p-6">
+          <div className="bg-white h-[300px] md:h-[400px] overflow-y-auto p-6">
             {leaves.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <p className="text-gray-500 source-sans-3-medium">
@@ -242,7 +242,7 @@ const EmployeeDashboardOverview = () => {
                           <p className="text-xs text-gray-600 mt-1">
                             {new Date(leave.startDate).toLocaleDateString(
                               "en-US",
-                              { month: "short", day: "numeric" }
+                              { month: "short", day: "numeric" },
                             )}{" "}
                             -{" "}
                             {new Date(leave.endDate).toLocaleDateString(
@@ -251,7 +251,7 @@ const EmployeeDashboardOverview = () => {
                                 month: "short",
                                 day: "numeric",
                                 year: "numeric",
-                              }
+                              },
                             )}
                           </p>
                         </div>
@@ -273,7 +273,7 @@ const EmployeeDashboardOverview = () => {
           <div className="py-8 flex justify-center bg-primary">
             <p className="source-sans-3-regular text-white">Absent days</p>
           </div>
-          <div className="bg-white h-[400px] overflow-y-auto p-6">
+          <div className="bg-white h-[300px] md:h-[400px] overflow-y-auto p-6">
             {absentDays.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <p className="text-gray-500 source-sans-3-medium">

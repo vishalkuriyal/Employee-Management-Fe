@@ -78,7 +78,7 @@ interface TodayAttendanceResponse {
 
 const EmployeeAttendance: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -88,7 +88,7 @@ const EmployeeAttendance: React.FC = () => {
   const [todayAttendance, setTodayAttendance] =
     useState<AttendanceDetails | null>(null);
   const [todaySummary, setTodaySummary] = useState<AttendanceSummary | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -96,7 +96,7 @@ const EmployeeAttendance: React.FC = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [showMarkModal, setShowMarkModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
-    null
+    null,
   );
   const [manualStatus, setManualStatus] =
     useState<AttendanceStatus["status"]>("present");
@@ -119,7 +119,6 @@ const EmployeeAttendance: React.FC = () => {
       fetchTodayAttendance();
     }
   }, [selectedDate, selectedDepartment, selectedStatus, currentPage]);
-
 
   const fetchAttendanceData = async () => {
     setLoading(true);
@@ -147,8 +146,6 @@ const EmployeeAttendance: React.FC = () => {
     }
   };
 
-  console.log("Attendance Data:", attendanceData);
-
   const fetchStatistics = async () => {
     try {
       // Calculate start and end date based on selected date
@@ -156,7 +153,7 @@ const EmployeeAttendance: React.FC = () => {
       const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
       const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-      const response = await api.get(`/api/attendance/statistics`, {
+      const response = await api.get(`/api/attendance/today-attendance`, {
         params: {
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
@@ -173,7 +170,6 @@ const EmployeeAttendance: React.FC = () => {
     }
   };
 
-  console.log("Statistics:", statistics);
 
   const fetchTodayAttendance = async () => {
     try {
@@ -183,7 +179,7 @@ const EmployeeAttendance: React.FC = () => {
           params: {
             department: selectedDepartment,
           },
-        }
+        },
       );
 
       if (response.data.success) {
@@ -197,7 +193,6 @@ const EmployeeAttendance: React.FC = () => {
     }
   };
 
-  console.log("Today Attendance:", todayAttendance);
 
   const handleMarkAttendance = async () => {
     if (!selectedEmployee) return;
@@ -557,7 +552,7 @@ const EmployeeAttendance: React.FC = () => {
                       <td className="py-4 px-6">
                         <span
                           className={`inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold border ${getStatusColor(
-                            employee.attendance.status
+                            employee.attendance.status,
                           )}`}
                         >
                           {getStatusIcon(employee.attendance.status)}

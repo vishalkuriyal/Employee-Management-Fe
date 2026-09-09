@@ -39,13 +39,13 @@ const MarkAttendance: React.FC = () => {
     AttendanceRecord[]
   >([]);
   const [statistics, setStatistics] = useState<AttendanceStatistics | null>(
-    null
+    null,
   );
   const [selectedMonth, setSelectedMonth] = useState<number>(
-    new Date().getMonth() + 1
+    new Date().getMonth() + 1,
   );
   const [selectedYear, setSelectedYear] = useState<number>(
-    new Date().getFullYear()
+    new Date().getFullYear(),
   );
   const { user } = useAuth();
   const userId = user?._id || "";
@@ -63,8 +63,6 @@ const MarkAttendance: React.FC = () => {
       fetchAttendanceHistory();
     }
   }, [userId, selectedMonth, selectedYear]);
-
-
 
   const fetchTodayAttendance = async () => {
     try {
@@ -107,7 +105,7 @@ const MarkAttendance: React.FC = () => {
             halfDay: 0,
             leave: 0,
             totalWorkingHours: 0,
-          }
+          },
         );
       }
     } catch (error) {
@@ -218,9 +216,9 @@ const MarkAttendance: React.FC = () => {
 
         {/* Today's Attendance Card */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-6 border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-indigo-100 rounded-xl">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center gap-3">
+              <div className="p-3 bg-indigo-100 rounded-xl w-fit">
                 <Clock className="w-6 h-6 text-indigo-600" />
               </div>
               <div>
@@ -330,7 +328,7 @@ const MarkAttendance: React.FC = () => {
                   </p>
                   <span
                     className={`inline-block px-4 py-2 rounded-lg text-sm font-semibold ${getStatusColor(
-                      todayAttendance.status
+                      todayAttendance.status,
                     )}`}
                   >
                     {todayAttendance.status?.toUpperCase()}
@@ -399,12 +397,12 @@ const MarkAttendance: React.FC = () => {
 
         {/* Attendance History */}
         <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-indigo-100 rounded-xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center gap-3">
+              <div className="p-3 bg-indigo-100 rounded-xl w-fit">
                 <History className="w-6 h-6 text-indigo-600" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
                 Attendance History
               </h2>
             </div>
@@ -483,7 +481,7 @@ const MarkAttendance: React.FC = () => {
                       <td className="py-4 px-4">
                         <span
                           className={`inline-block px-3 py-1 rounded-lg text-xs font-semibold border ${getStatusColor(
-                            record.status
+                            record.status,
                           )}`}
                         >
                           {record.status.toUpperCase()}

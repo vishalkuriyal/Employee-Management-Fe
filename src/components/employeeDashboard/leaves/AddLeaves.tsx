@@ -72,12 +72,11 @@ const AddLeaves = () => {
     }
   };
 
-  setIsSubmitting(false);
   return (
-    <div className="px-20 py-28">
+    <div className="px-5 md:px-20 py-8 md:py-28">
       <h2 className="source-sans-3-semibold">Applying for Leave</h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-3 gap-10 mt-10">
+        <div className="grid md:grid-cols-3 gap-10 mt-10">
           <div className="flex flex-col">
             <label className="ml-2 mb-2">From Date</label>
             <input
@@ -164,8 +163,8 @@ const AddLeaves = () => {
           )}
         </div>
 
-        <div className="mt-10 flex gap-10 items-end">
-          <div className="w-[32%] flex flex-col">
+        <div className="mt-10 flex flex-col md:flex-row gap-10 md:items-end">
+          <div className="md:w-[32%] flex flex-col">
             <label className="source-sans-3-regular ml-2 mb-2">Reason</label>
             <textarea
               placeholder="Enter the Reason"

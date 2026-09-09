@@ -2,6 +2,7 @@ import { useAuth } from "../../context/AuthContext";
 import { RiLogoutCircleRFill } from "react-icons/ri";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import hamburger from "../../assets/hamburger.svg"
 
 type Props = {
   toggleSidebar: () => void;
@@ -16,13 +17,13 @@ const Navbar = ({ toggleSidebar }: Props) => {
     await logout();
   };
   return (
-    <div className="h-fit px-14 bg-background">
+    <div className="h-fit px-5 md:px-14 bg-background">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-[#E0E0E0] py-6 ">
         <button
-          className="sm:hidden w-fit p-5 text-white bg-black"
+          className="sm:hidden w-fit p-1 text-white bg-black"
           onClick={toggleSidebar}
         >
-          x
+          <img src={hamburger} alt="Toggle Sidebar" />
         </button>
         <p className="source-sans-3-semibold text-secondary">
           Welcome {user?.name}

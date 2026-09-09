@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { UserCheck, Phone, Mail, Building, RefreshCw } from "lucide-react";
 import employee from "../../assets/employees.svg";
-import api from "../../utils/axios";
+import api, { getImageUrl } from "../../utils/axios";
 import working from "../../assets/working.svg";
 
 // Keep your existing type definitions...
@@ -54,15 +54,14 @@ interface ApiResponse {
 
 const DashboardOverview: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [refreshing, setRefreshing] = useState<boolean>(false);
-
 
   useEffect(() => {
     fetchDashboardData();
@@ -73,14 +72,10 @@ const DashboardOverview: React.FC = () => {
     setError("");
 
     try {
-      console.log(
-        "Fetching dashboard data from /api/dashboard/employee-detail"
-      );
       const res = await api.get(`/api/dashboard/employee-detail`);
       const data: ApiResponse = res.data;
       if (data.success && data.data) {
         setDashboardData(data.data);
-        console.log("Dashboard data loaded successfully");
       } else {
         throw new Error(data.error || "API returned unsuccessful response");
       }
@@ -214,7 +209,6 @@ const DashboardOverview: React.FC = () => {
 
   const { summary, employeesOnLeave } = dashboardData;
 
-  console.log("summary", summary);
 
   return (
     <div className="px-14 bg-background">
@@ -366,13 +360,13 @@ const DashboardOverview: React.FC = () => {
                             <div className="flex-shrink-0">
                               {employee.image ? (
                                 <img
-                                  src={`/uploads/${employee.image}`}
+                                  src={getImageUrl(employee.image)}
                                   alt={employee.name}
                                   className="h-10 w-10 rounded-full object-cover"
                                   onError={(e) => {
                                     e.currentTarget.style.display = "none";
                                     e.currentTarget.nextElementSibling?.classList.remove(
-                                      "hidden"
+                                      "hidden",
                                     );
                                   }}
                                 />
@@ -398,7 +392,7 @@ const DashboardOverview: React.FC = () => {
                         <td className="py-4 px-5">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs source-sans-3-semibold border ${getLeaveTypeColor(
-                              employee.leaveDetails.leaveType
+                              employee.leaveDetails.leaveType,
                             )}`}
                           >
                             {employee.leaveDetails.leaveType
@@ -414,7 +408,7 @@ const DashboardOverview: React.FC = () => {
                           <div className="source-sans-3-regular text-xs text-[#606060] mt-1">
                             {formatDateRange(
                               employee.leaveDetails.fromDate,
-                              employee.leaveDetails.endDate
+                              employee.leaveDetails.endDate,
                             )}
                           </div>
                         </td>

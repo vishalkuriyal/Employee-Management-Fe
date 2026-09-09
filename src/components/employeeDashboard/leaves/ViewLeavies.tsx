@@ -27,8 +27,12 @@ const ViewLeaves = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchLeaveBalance();
-  }, []);
+    if (user?._id) {
+      fetchLeaveBalance();
+    } else if (!user) {
+      setLoading(false);
+    }
+  }, [user?._id]);
 
   const fetchLeaveBalance = async () => {
     try {
@@ -89,7 +93,7 @@ const ViewLeaves = () => {
 
   if (error) {
     return (
-      <div className="px-20 py-28">
+      <div className="px-5 md:px-20 py-8 md:py-28">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
           <p className="text-red-600">{error}</p>
         </div>
@@ -120,7 +124,7 @@ const ViewLeaves = () => {
     : 0;
 
   return (
-    <div className="px-20 py-28">
+    <div className="px-8 md:px-20 py-8 md:py-28">
       {/* Leave Balance Summary */}
       {leaveBalance && (
         <div className="mb-8 p-6 bg-blue-50 rounded-2xl">
@@ -149,7 +153,7 @@ const ViewLeaves = () => {
       )}
 
       {/* Leave Cards */}
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid md:grid-cols-3 gap-10">
         {/* Casual Leaves Card */}
         <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
           <div className="bg-green-500 text-white p-4">
@@ -200,7 +204,7 @@ const ViewLeaves = () => {
                           (leaveBalance.casual.used /
                             leaveBalance.casual.available) *
                             100,
-                          100
+                          100,
                         )}%`,
                       }}
                     ></div>
@@ -274,7 +278,7 @@ const ViewLeaves = () => {
                           (leaveBalance.sick.used /
                             leaveBalance.sick.available) *
                             100,
-                          100
+                          100,
                         )}%`,
                       }}
                     ></div>

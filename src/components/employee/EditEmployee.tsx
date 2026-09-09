@@ -1,7 +1,7 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { fetchDepartments } from "../../utils/EmployeeHelpers";
 import axios from "axios";
-import api, { API_BASE_URL } from "../../utils/axios";
+import api, { getImageUrl } from "../../utils/axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 type UserType = {
@@ -168,7 +168,7 @@ const EditEmployee = () => {
   }, [id]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value, type } = e.target;
 
@@ -442,9 +442,13 @@ const EditEmployee = () => {
               <div className="flex items-center gap-4">
                 {employee?.userId.image && (
                   <img
-                    src={`${API_BASE_URL}/${employee.userId.image}`}
+                    src={getImageUrl(employee.userId.image)}
                     alt="Current profile"
                     className="w-12 h-12 rounded-full object-cover"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = "/placeholder-avatar.svg";
+                    }}
                   />
                 )}
                 <input
