@@ -307,6 +307,8 @@ const EmployeeAttendance: React.FC = () => {
     a.click();
   };
 
+  console.log("today's attendance:", todayAttendance);
+
   // Check if viewing today
   const isToday = selectedDate === new Date().toISOString().split("T")[0];
 
