@@ -23,8 +23,13 @@ type EmployeeType = {
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [empLoading, setEmpLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+
+  const filteredEmployees = employees.filter((employee) =>
+    employee.name.toLowerCase().includes(searchTerm.trim().toLowerCase()),
+  );
 
   const handleEmployeeDelete = (id: string) => {
     setEmployees((prev) => prev.filter((emp) => emp._id !== id));
@@ -44,7 +49,6 @@ const EmployeeList = () => {
 
       const response = await api.get(`/api/employees`);
 
-
       if (response.data.success) {
         const employeesData = response.data.employees;
 
@@ -56,7 +60,6 @@ const EmployeeList = () => {
         let sno = 1;
         const data = employeesData
           .map((emp: any) => {
-
             // Check if required nested data exists
             if (!emp.userId) {
               console.error("Employee missing userId:", emp);
@@ -108,7 +111,7 @@ const EmployeeList = () => {
         console.error("API returned success: false");
         setError(
           "Failed to fetch employees: " +
-            (response.data.error || "Unknown error")
+            (response.data.error || "Unknown error"),
         );
       }
     } catch (error) {
@@ -130,7 +133,7 @@ const EmployeeList = () => {
         } else if (error.request) {
           console.error("No response received:", error.request);
           setError(
-            "No response from server. Please check if the server is running."
+            "No response from server. Please check if the server is running.",
           );
         } else {
           console.error("Request setup error:", error.message);
@@ -148,7 +151,7 @@ const EmployeeList = () => {
     fetchEmployees();
   }, []);
 
-console.log("employee datas", employees);
+  console.log("employee datas", employees);
   if (empLoading) {
     return (
       <div className="px-14 bg-background">
@@ -161,7 +164,7 @@ console.log("employee datas", employees);
 
   if (error) {
     return (
-      <div className="px-14 bg-background">
+      <div className="px-5 md:px-14 bg-background">
         <div className="mt-10">
           <div className="mb-8">
             <h2 className="source-sans-3-bold text-3xl">Manage Employees</h2>
@@ -183,15 +186,17 @@ console.log("employee datas", employees);
   }
 
   return (
-    <div className="px-14 bg-background">
+    <div className="px-5 md:px-14 bg-background">
       <div className="mt-10">
         <div className="mb-8">
           <h2 className="source-sans-3-bold text-3xl">Manage Employees</h2>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between md:items-center">
           <input
             type="text"
             placeholder="Search Employee Name"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
             className="px-4 py-2 border border-black/30 source-sans-3-regular outline-none"
           />
           <Link
@@ -202,9 +207,13 @@ console.log("employee datas", employees);
           </Link>
         </div>
         <div className="mt-5">
-          {employees.length === 0 ? (
+          {filteredEmployees.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">No employees found.</p>
+              <p className="text-gray-600">
+                {employees.length === 0
+                  ? "No employees found."
+                  : "No employees match your search."}
+              </p>
               <Link
                 to="/admin-dashboard/add-employee"
                 className="mt-4 inline-block px-6 py-2 bg-secondary text-white source-sans-3-semibold cursor-pointer"
@@ -215,7 +224,7 @@ console.log("employee datas", employees);
           ) : (
             <DataTable
               columns={columns}
-              data={employees}
+              data={filteredEmployees}
               customStyles={customStyles}
               pagination
             />

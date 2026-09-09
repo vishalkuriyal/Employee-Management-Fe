@@ -259,8 +259,8 @@ const EditEmployee = () => {
   }
 
   return (
-    <div className="px-14 bg-background">
-      <div className="max-w-4xl mx-auto mt-10 bg-white px-14 py-16">
+    <div className="px-5 md:px-14 bg-background">
+      <div className="max-w-4xl mx-auto mt-10 bg-white px-5 md:px-14 py-8 md:py-16">
         <h3 className="source-sans-3-semibold text-2xl text-center mb-8">
           Edit Employee
         </h3>

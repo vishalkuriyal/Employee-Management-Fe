@@ -211,7 +211,7 @@ const DashboardOverview: React.FC = () => {
 
 
   return (
-    <div className="px-14 bg-background">
+    <div className="px-5 md:px-14 bg-background">
       {/* Header with Date Selector */}
       <div className="flex flex-col sm:flex-row justify-between sm:items-center mt-6 mb-6">
         <div>

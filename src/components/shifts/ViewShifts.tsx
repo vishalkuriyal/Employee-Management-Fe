@@ -109,7 +109,7 @@ const ViewShifts = () => {
     <div className="px-6 py-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <div>
             <h2 className="text-3xl font-bold text-gray-800">
               Shift Management

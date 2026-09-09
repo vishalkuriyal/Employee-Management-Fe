@@ -79,12 +79,12 @@ const DepartmentList = () => {
       {depLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className="px-14 bg-background">
+        <div className="px-5 md:px-14 bg-background">
           <div className="mt-10">
             <div className="mb-8">
               <h2 className="source-sans-3-bold text-3xl">Manage Department</h2>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between md:items-center">
               <input
                 type="text"
                 placeholder="Search Department Name"

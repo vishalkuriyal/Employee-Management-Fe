@@ -46,7 +46,7 @@ const AddDepartment = () => {
     }
   };
   return (
-    <div className="px-14 bg-background">
+    <div className="px-5 md:px-14 bg-background">
       <div className="max-w-3xl w-fit mx-auto mt-10 bg-white px-14 py-16">
         <h3 className="source-sans-3-semibold text-2xl text-center mb-8">
           Add Department
